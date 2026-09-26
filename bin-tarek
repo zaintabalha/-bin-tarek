@@ -1,0 +1,1164 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>بن طارق - إدارة الطلبات والمالية</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Tajawal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Tajawal', 'sans-serif'],
+          },
+          colors: {
+            coffee: {
+              50: '#FDF8F5',
+              100: '#F5ECE5',
+              200: '#E8D5C4',
+              300: '#D5B69C',
+              400: '#BA8D6A',
+              500: '#9C6644',
+              600: '#7F4F24',
+              700: '#633811',
+              800: '#462406',
+              900: '#2B1400',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    input, textarea, select {
+      user-select: text;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .custom-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-stone-100 text-stone-800 min-h-screen pb-20 selection:bg-amber-800 selection:text-white">
+
+  <!-- ==================== 1. شاشة تسجيل الدخول ==================== -->
+  <div id="loginScreen" class="fixed inset-0 z-50 bg-stone-900 flex flex-col justify-center items-center p-6 text-white overflow-y-auto">
+    <div class="w-full max-w-sm bg-stone-800/90 border border-stone-700/60 p-6 rounded-3xl shadow-2xl backdrop-blur-md">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 mx-auto mb-3 bg-gradient-to-tr from-amber-700 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-900/40">
+          <i data-lucide="coffee" class="w-9 h-9 text-white"></i>
+        </div>
+        <h1 class="text-2xl font-black text-amber-100">بُــنّ طــارق</h1>
+        <p class="text-xs text-stone-400 mt-1">نظام إدارة الورشة والطلبات السحابي</p>
+      </div>
+
+      <!-- اختيار الحساب -->
+      <div class="flex bg-stone-950/60 p-1 rounded-2xl mb-6 border border-stone-800">
+        <button id="selectBossBtn" onclick="selectRole('boss')" class="flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all duration-200 bg-amber-600 text-white shadow-md flex items-center justify-center gap-2">
+          <i data-lucide="shield" class="w-4 h-4"></i>
+          الـ Boss
+        </button>
+        <button id="selectWorkerBtn" onclick="selectRole('worker')" class="flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all duration-200 text-stone-400 hover:text-white flex items-center justify-center gap-2">
+          <i data-lucide="user-check" class="w-4 h-4"></i>
+          العامل
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-stone-300 mb-2">كلمة المرور</label>
+          <div class="relative">
+            <input type="password" id="loginPassInput" placeholder="أدخل كلمة المرور..." class="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-white text-center tracking-widest text-lg focus:outline-none focus:border-amber-500 transition-all">
+          </div>
+          <p id="loginError" class="text-xs text-rose-400 mt-2 text-center hidden flex items-center justify-center gap-1">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+            <span>كلمة المرور غير صحيحة!</span>
+          </p>
+        </div>
+
+        <button onclick="performLogin()" class="w-full py-3.5 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 active:scale-95 text-white font-bold rounded-xl shadow-lg shadow-amber-900/40 transition-all flex items-center justify-center gap-2 text-base">
+          <span>دخول للنظام</span>
+          <i data-lucide="log-in" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2. الواجهة الرئيسية والتنقل ==================== -->
+  <div id="mainApp" class="hidden">
+    <!-- الرأس Header -->
+    <header class="sticky top-0 z-40 bg-stone-900 text-white px-4 py-3 shadow-md border-b border-stone-800">
+      <div class="max-w-md mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-amber-600 flex items-center justify-center shadow-md">
+            <i data-lucide="coffee" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <h1 class="text-lg font-black leading-tight text-amber-100">بُن طارق</h1>
+            <p id="headerRoleBadge" class="text-[10px] font-bold text-amber-400 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+              <span>لوحة الإدارة</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- إعدادات وتغيير كلمة السر -->
+          <button onclick="openSettingsModal()" class="w-9 h-9 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 flex items-center justify-center transition-colors">
+            <i data-lucide="settings" class="w-4 h-4"></i>
+          </button>
+          <!-- تسجيل الخروج -->
+          <button onclick="logout()" class="w-9 h-9 rounded-xl bg-stone-800 hover:bg-rose-900/50 text-stone-300 hover:text-rose-400 flex items-center justify-center transition-colors">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- المحتوى القابل للتغيير عبر التبويبات -->
+    <main class="max-w-md mx-auto p-4">
+      
+      <!-- ==================== تبويب الطلبات (Boss & Worker) ==================== -->
+      <section id="ordersTabSection">
+        
+        <!-- بطاقة حالة وتتبع آخر ظهور للعامل (تظهر للبوس فقط) -->
+        <div id="workerPresenceCard" class="mb-4 bg-white border border-stone-200/80 p-3.5 rounded-2xl shadow-sm flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <div class="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-stone-700 font-bold">
+                <i data-lucide="user" class="w-5 h-5"></i>
+              </div>
+              <span id="workerStatusIndicator" class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-stone-400 border-2 border-white"></span>
+            </div>
+            <div>
+              <p class="text-xs text-stone-500 font-semibold">باريستا الورشة (العامل)</p>
+              <p id="workerLastSeenText" class="text-xs font-bold text-stone-800 mt-0.5">جاري التحقق من النشاط...</p>
+            </div>
+          </div>
+          <button onclick="renderWorkerPresence()" class="p-2 text-stone-400 hover:text-stone-700 rounded-lg hover:bg-stone-50">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- أزرار فلترة الطلبات السريعة -->
+        <div class="flex gap-1.5 overflow-x-auto custom-scrollbar pb-2 mb-3 text-xs font-bold">
+          <button onclick="filterOrders('all')" id="filterBtn-all" class="px-3.5 py-2 rounded-xl bg-stone-800 text-white shadow-sm whitespace-nowrap">الكل (<span id="count-all">0</span>)</button>
+          <button onclick="filterOrders('pending')" id="filterBtn-pending" class="px-3.5 py-2 rounded-xl bg-white text-stone-600 border border-stone-200 whitespace-nowrap">قيد المتابعة (<span id="count-pending">0</span>)</button>
+          <button onclick="filterOrders('preparing')" id="filterBtn-preparing" class="px-3.5 py-2 rounded-xl bg-white text-stone-600 border border-stone-200 whitespace-nowrap">جاري التحضير (<span id="count-preparing">0</span>)</button>
+          <button onclick="filterOrders('ready')" id="filterBtn-ready" class="px-3.5 py-2 rounded-xl bg-white text-stone-600 border border-stone-200 whitespace-nowrap">جاهز (<span id="count-ready">0</span>)</button>
+          <button onclick="filterOrders('completed')" id="filterBtn-completed" class="px-3.5 py-2 rounded-xl bg-white text-stone-600 border border-stone-200 whitespace-nowrap">مكتمل (<span id="count-completed">0</span>)</button>
+        </div>
+
+        <!-- قائمة كروت الطلبات -->
+        <div id="ordersList" class="space-y-3">
+          <!-- يتم حقن الطلبات ديناميكياً بواسطة JavaScript -->
+        </div>
+
+        <!-- رسالة عند عدم وجود طلبات -->
+        <div id="noOrdersState" class="hidden text-center py-14">
+          <div class="w-16 h-16 mx-auto mb-3 bg-stone-200/60 rounded-2xl flex items-center justify-center text-stone-400">
+            <i data-lucide="inbox" class="w-8 h-8"></i>
+          </div>
+          <h3 class="text-sm font-bold text-stone-700">لا توجد طلبات حالياً</h3>
+          <p class="text-xs text-stone-500 mt-1">الطلبات الجديدة ستظهر فور إضافتها</p>
+        </div>
+      </section>
+
+      <!-- ==================== تبويب إنشاء طلب جديد (Boss فقط) ==================== -->
+      <section id="newOrderTabSection" class="hidden">
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-stone-200/80 mb-6">
+          <div class="flex items-center gap-2 mb-4 pb-3 border-b border-stone-100">
+            <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
+              <i data-lucide="plus-circle" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h2 class="text-base font-extrabold text-stone-800">إضافة طلب قهوة جديد</h2>
+              <p class="text-[11px] text-stone-500">اختر الصنف والوزن ليتم إرساله للورشة</p>
+            </div>
+          </div>
+
+          <form id="orderForm" onsubmit="handleCreateOrder(event)" class="space-y-4">
+            
+            <!-- 1. اختيار الصنف -->
+            <div>
+              <label class="block text-xs font-extrabold text-stone-700 mb-2">اختر الصنف :</label>
+              <div class="grid grid-cols-2 gap-2 text-xs font-bold" id="itemSelectionGrid">
+                
+                <!-- مجموعة البن التقليدي -->
+                <button type="button" onclick="selectCoffeeItem('سوبر', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-600 bg-amber-50 text-amber-900 flex flex-col items-center text-center gap-1 transition-all">
+                  <i data-lucide="coffee" class="w-4 h-4 text-amber-700"></i>
+                  <span>سوبر</span>
+                </button>
+                <button type="button" onclick="selectCoffeeItem('وسط', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex flex-col items-center text-center gap-1 transition-all">
+                  <i data-lucide="coffee" class="w-4 h-4"></i>
+                  <span>وسط</span>
+                </button>
+                <button type="button" onclick="selectCoffeeItem('بلا هيل', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex flex-col items-center text-center gap-1 transition-all">
+                  <i data-lucide="coffee" class="w-4 h-4"></i>
+                  <span>بلا هيل</span>
+                </button>
+                <button type="button" onclick="selectCoffeeItem('موكا بلا هيل', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex flex-col items-center text-center gap-1 transition-all">
+                  <i data-lucide="coffee" class="w-4 h-4"></i>
+                  <span>موكا بلا هيل</span>
+                </button>
+                <button type="button" onclick="selectCoffeeItem('غامقة هيل اكسترا', 'coffee')" class="item-card col-span-2 p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex items-center justify-center gap-2 transition-all">
+                  <i data-lucide="flame" class="w-4 h-4 text-amber-800"></i>
+                  <span>غامقة هيل اكسترا</span>
+                </button>
+
+                <!-- كيس زبلطاني (كيلين حصراً) -->
+                <button type="button" onclick="selectCoffeeItem('كيس زبلطاني', 'special_2kg')" class="item-card col-span-2 p-3.5 rounded-2xl border-2 border-stone-200 bg-stone-50 text-stone-800 hover:border-amber-500 flex items-center justify-between px-4 transition-all">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="package" class="w-5 h-5 text-amber-700"></i>
+                    <span class="font-extrabold">كيس زبلطاني</span>
+                  </div>
+                  <span class="text-[11px] bg-amber-600 text-white font-black px-2.5 py-1 rounded-lg">كيلين حصراً (2 كغ)</span>
+                </button>
+
+                <!-- أصناف 3in1، كابتشينو، هوت شوكلت -->
+                <div class="col-span-2 pt-2 border-t border-stone-100">
+                  <p class="text-[11px] font-bold text-stone-400 mb-2">المشروبات الإضافية (كيلو / نصف كيلو / مخصص):</p>
+                </div>
+                <button type="button" onclick="selectCoffeeItem('3in1', 'instant_fixed')" class="item-card p-2.5 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex flex-col items-center text-center gap-1 transition-all">
+                  <i data-lucide="cup-soda" class="w-4 h-4 text-amber-600"></i>
+                  <span>3in1</span>
+                </button>
+                <button type="button" onclick="selectCoffeeItem('كابتشينو', 'instant_fixed')" class="item-card p-2.5 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex flex-col items-center text-center gap-1 transition-all">
+                  <i data-lucide="cup-soda" class="w-4 h-4 text-amber-600"></i>
+                  <span>كابتشينو</span>
+                </button>
+                <button type="button" onclick="selectCoffeeItem('هوت شوكلت', 'instant_fixed')" class="item-card col-span-2 p-2.5 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex items-center justify-center gap-2 transition-all">
+                  <i data-lucide="cup-soda" class="w-4 h-4 text-amber-800"></i>
+                  <span>هوت شوكلت</span>
+                </button>
+
+                <!-- أصناف النوع الثاني (مخصص حصراً) -->
+                <div class="col-span-2 pt-2 border-t border-stone-100">
+                  <p class="text-[11px] font-bold text-stone-400 mb-2">أصناف النوع الثاني (وزن مخصص حصراً):</p>
+                </div>
+                <button type="button" onclick="selectCoffeeItem('3in1 نوع ثاني', 'custom_only')" class="item-card p-2.5 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 text-center transition-all">
+                  <span>3in1 نوع ثاني</span>
+                </button>
+                <button type="button" onclick="selectCoffeeItem('كابتشينو نوع ثاني', 'custom_only')" class="item-card p-2.5 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 text-center transition-all">
+                  <span>كابتشينو نوع ثاني</span>
+                </button>
+                <button type="button" onclick="selectCoffeeItem('هوت شوكلت نوع ثاني', 'custom_only')" class="item-card col-span-2 p-2.5 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 text-center transition-all">
+                  <span>هوت شوكلت نوع ثاني</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. خيارات الأوزان (تتغير ديناميكياً وتختفي مع الزبلطاني) -->
+            <div id="weightSectionWrapper">
+              <label class="block text-xs font-extrabold text-stone-700 mb-2">تحديد الوزن :</label>
+              
+              <!-- شبكة الأوزان القياسية -->
+              <div id="standardWeightsGrid" class="grid grid-cols-2 gap-2 text-xs font-bold">
+                <button type="button" onclick="setWeight('كيلو')" id="weightBtn-كيلو" class="weight-btn p-3 rounded-2xl border-2 border-amber-600 bg-amber-50 text-amber-900 text-center transition-all">كيلو (1 كغ)</button>
+                <button type="button" onclick="setWeight('نص كيلو')" id="weightBtn-نص كيلو" class="weight-btn p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 text-center transition-all">نص كيلو (500غ)</button>
+                <button type="button" onclick="setWeight('ربع كيلو')" id="weightBtn-ربع كيلو" class="weight-btn p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 text-center transition-all">ربع كيلو (250غ)</button>
+                <button type="button" onclick="setWeight('وقية')" id="weightBtn-وقية" class="weight-btn p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 text-center transition-all">وقية (200غ)</button>
+              </div>
+
+              <!-- زر اختيار الوزن المخصص -->
+              <div id="customWeightBtnWrapper" class="mt-2 hidden">
+                <button type="button" onclick="setWeight('مخصص')" id="weightBtn-مخصص" class="w-full py-2.5 rounded-2xl border-2 border-dashed border-stone-300 bg-stone-50 text-stone-700 font-bold text-xs hover:border-amber-500 flex items-center justify-center gap-2">
+                  <i data-lucide="edit-3" class="w-4 h-4"></i>
+                  <span>وزن مخصص (إدخال يدوي)</span>
+                </button>
+              </div>
+
+              <!-- حقل كتابة الوزن المخصص -->
+              <div id="customWeightInputDiv" class="mt-2 hidden">
+                <input type="text" id="customWeightVal" placeholder="اكتب الوزن المطلوب (مثال: 750 غرام، كيس 300غ...)" class="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-2.5 text-xs font-bold text-stone-800 focus:outline-none focus:border-amber-500">
+              </div>
+            </div>
+
+            <!-- إشعار وزن الزبلطاني الثابت -->
+            <div id="zablaniNotice" class="hidden p-3 bg-amber-50 border border-amber-200 rounded-2xl text-xs font-bold text-amber-900 flex items-center gap-2">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-amber-700"></i>
+              <span>الوزن مقفل تلقائياً: 2 كغ (كيلين)</span>
+            </div>
+
+            <!-- تفاصيل إضافية: الكمية والجهة والسعر -->
+            <div class="grid grid-cols-2 gap-3 pt-2">
+              <div>
+                <label class="block text-[11px] font-bold text-stone-600 mb-1">الكمية (أكياس)</label>
+                <input type="number" id="orderQty" value="1" min="1" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-center text-sm font-black focus:outline-none focus:border-amber-500">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-stone-600 mb-1">السعر الإجمالي (ل.س / $)</label>
+                <input type="number" id="orderPrice" placeholder="المبلغ..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-center text-sm font-black text-amber-700 focus:outline-none focus:border-amber-500" required>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold text-stone-600 mb-1">اسم الزبون / جهة التوصيل (اختياري)</label>
+              <input type="text" id="orderCustomer" placeholder="زبون مباشر، كافيه النجمة، توصيل..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:border-amber-500">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold text-stone-600 mb-1">ملاحظات الطحن أو التجهيز</label>
+              <input type="text" id="orderNotes" placeholder="ناعمة جداً، ركوة، مع وش، كيس مضغوط..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:border-amber-500">
+            </div>
+
+            <!-- زر إرسال الطلب -->
+            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 active:scale-95 text-white font-black text-sm rounded-2xl shadow-lg shadow-amber-900/20 transition-all flex items-center justify-center gap-2">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>إرسال الطلب للورشة فوراً</span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ==================== تبويب الإدارة المالية والتقارير (Boss فقط) ==================== -->
+      <section id="financeTabSection" class="hidden space-y-4">
+        
+        <!-- ملخص الكروت المالية -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-gradient-to-br from-stone-900 to-stone-800 text-white p-4 rounded-3xl shadow-sm border border-stone-700/60">
+            <span class="text-[11px] text-stone-400 font-bold block mb-1">إجمالي المبيعات والطلبات</span>
+            <h3 id="financeTotalOrders" class="text-xl font-black text-amber-300">0</h3>
+            <span class="text-[10px] text-stone-400 mt-1 block">شامل طلبات البن والخلطات</span>
+          </div>
+
+          <div class="bg-gradient-to-br from-amber-800 to-amber-950 text-white p-4 rounded-3xl shadow-sm border border-amber-700/60">
+            <span class="text-[11px] text-amber-200 font-bold block mb-1">إجمالي الدخل المالي الشامل</span>
+            <h3 id="financeGrandTotal" class="text-xl font-black text-amber-100">0</h3>
+            <span class="text-[10px] text-amber-300/80 mt-1 block">طلبات + الغلّة الأسبوعية</span>
+          </div>
+        </div>
+
+        <!-- الخط البياني التفاعلي -->
+        <div class="bg-white p-4 rounded-3xl shadow-sm border border-stone-200/80">
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-stone-100">
+            <div>
+              <h3 class="text-xs font-black text-stone-800">مخطط التدفق المالي</h3>
+              <p class="text-[10px] text-stone-500">حركة المبيعات خلال الفترات</p>
+            </div>
+            
+            <!-- أزرار الفترات الزمنية -->
+            <div class="flex bg-stone-100 p-1 rounded-xl text-[10px] font-bold">
+              <button onclick="setChartRange('day')" id="chartRange-day" class="px-2.5 py-1 rounded-lg bg-white text-stone-800 shadow-xs">يوم</button>
+              <button onclick="setChartRange('week')" id="chartRange-week" class="px-2.5 py-1 rounded-lg text-stone-500 hover:text-stone-800">أسبوع</button>
+              <button onclick="setChartRange('month')" id="chartRange-month" class="px-2.5 py-1 rounded-lg text-stone-500 hover:text-stone-800">شهر</button>
+              <button onclick="setChartRange('year')" id="chartRange-year" class="px-2.5 py-1 rounded-lg text-stone-500 hover:text-stone-800">سنة</button>
+            </div>
+          </div>
+
+          <!-- مساحة الرسم البياني -->
+          <div class="h-48 w-full">
+            <canvas id="salesChartCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- إدراج الغلّة الأسبوعية المباشرة للمحل -->
+        <div class="bg-white p-4 rounded-3xl shadow-sm border border-stone-200/80">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+                <i data-lucide="coins" class="w-4 h-4"></i>
+              </div>
+              <h3 class="text-xs font-extrabold text-stone-800">إدراج الغلّة الأسبوعية للمحل</h3>
+            </div>
+            <button onclick="toggleGhallahHistory()" class="text-[11px] text-amber-700 font-bold hover:underline">السجل السابق</button>
+          </div>
+
+          <form onsubmit="handleAddWeeklyGhallah(event)" class="space-y-3">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] font-bold text-stone-500 mb-1">المبلغ المحصل</label>
+                <input type="number" id="ghallahAmount" placeholder="مبلغ الغلة..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-black text-emerald-700 focus:outline-none focus:border-emerald-500" required>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-stone-500 mb-1">تاريخ نهاية الأسبوع</label>
+                <input type="date" id="ghallahDate" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-2 py-2 text-xs font-bold text-stone-700 focus:outline-none focus:border-emerald-500" required>
+              </div>
+            </div>
+            <input type="text" id="ghallahNotes" placeholder="ملاحظة (مثال: غلة الأسبوع الثالث من تشرين...)" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:border-emerald-500">
+            <button type="submit" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md shadow-emerald-900/10 flex items-center justify-center gap-1.5 transition-all">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>تسجيل الغلة في الصندوق المالي</span>
+            </button>
+          </form>
+
+          <!-- جدول سجل الغلال المودعة -->
+          <div id="ghallahHistorySection" class="hidden mt-4 pt-3 border-t border-stone-100 max-h-40 overflow-y-auto custom-scrollbar">
+            <p class="text-[10px] font-bold text-stone-400 mb-2">سجل الإيداعات الأسبوعية:</p>
+            <div id="ghallahList" class="space-y-1.5 text-xs">
+              <!-- حقن الغلال هنا -->
+            </div>
+          </div>
+        </div>
+
+        <!-- زر استخراج تقرير الشهر (Excel / CSV) -->
+        <div class="flex gap-2">
+          <button onclick="exportMonthlyReportCSV()" class="flex-1 py-3 bg-stone-800 hover:bg-stone-900 text-white font-bold text-xs rounded-2xl shadow-sm flex items-center justify-center gap-2 transition-all">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-400"></i>
+            <span>تصدير كشف الشهر (Excel/CSV)</span>
+          </button>
+          <button onclick="window.print()" class="px-4 py-3 bg-stone-200 hover:bg-stone-300 text-stone-700 font-bold text-xs rounded-2xl flex items-center justify-center gap-2">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ==================== شريط التنقل السفلي للموبايل (Bottom Navigation) ==================== -->
+    <nav class="fixed bottom-0 inset-x-0 z-40 bg-stone-900 border-t border-stone-800 text-stone-400 px-4 py-2">
+      <div class="max-w-md mx-auto flex items-center justify-around">
+        
+        <!-- تبويب الطلبات (متاح للجميع) -->
+        <button onclick="switchTab('orders')" id="tabBtn-orders" class="nav-tab-btn flex flex-col items-center gap-1 py-1 px-3 rounded-xl text-amber-500 font-bold">
+          <i data-lucide="layout-list" class="w-5 h-5"></i>
+          <span class="text-[10px]">الطلبات</span>
+        </button>
+
+        <!-- تبويب طلب جديد (للبوس فقط) -->
+        <button onclick="switchTab('newOrder')" id="tabBtn-newOrder" class="nav-tab-btn boss-only-feature flex flex-col items-center gap-1 py-1 px-3 rounded-xl hover:text-stone-200 font-medium">
+          <i data-lucide="plus-circle" class="w-5 h-5"></i>
+          <span class="text-[10px]">طلب جديد</span>
+        </button>
+
+        <!-- تبويب المالية (للبوس فقط) -->
+        <button onclick="switchTab('finance')" id="tabBtn-finance" class="nav-tab-btn boss-only-feature flex flex-col items-center gap-1 py-1 px-3 rounded-xl hover:text-stone-200 font-medium">
+          <i data-lucide="badge-dollar-sign" class="w-5 h-5"></i>
+          <span class="text-[10px]">المالية</span>
+        </button>
+
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- ==================== Modal نافذة الإعدادات وتغيير كلمة السر ==================== -->
+  <div id="settingsModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl p-5 w-full max-w-sm shadow-2xl border border-stone-200">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
+        <h3 class="text-sm font-extrabold text-stone-800 flex items-center gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4 text-amber-600"></i>
+          <span>إعدادات الأمان وكلمات السر</span>
+        </h3>
+        <button onclick="closeSettingsModal()" class="text-stone-400 hover:text-stone-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-bold text-stone-600 mb-1">كلمة مرور الـ Boss الحالية</label>
+          <input type="password" id="changeBossPass" placeholder="كلمة سر البوس..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-stone-600 mb-1">كلمة مرور العامل (الباريستا)</label>
+          <input type="password" id="changeWorkerPass" placeholder="كلمة سر العامل..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold">
+        </div>
+        <button onclick="saveNewPasswords()" class="w-full py-2.5 mt-2 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs rounded-xl transition-all">
+          حفظ التغييرات
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== المنطق البرمجي (JavaScript) ==================== -->
+  <script>
+    // 1. مفاتيح التخزين وحالة النظام
+    const STORAGE_KEYS = {
+      CURRENT_USER: 'bin_tareq_auth_user',
+      PASS_BOSS: 'bin_tareq_pass_boss',
+      PASS_WORKER: 'bin_tareq_pass_worker',
+      ORDERS: 'bin_tareq_orders_data',
+      GHALLAH: 'bin_tareq_ghallah_data',
+      WORKER_PULSE: 'bin_tareq_worker_heartbeat'
+    };
+
+    let currentUserRole = null; // 'boss' | 'worker'
+    let selectedLoginRole = 'boss';
+    let currentFilter = 'all';
+    let activeTab = 'orders';
+    let chartTimeRange = 'week';
+    let salesChartInstance = null;
+
+    // المتغيرات المختارة للطلب الجديد
+    let newOrderState = {
+      item: 'سوبر',
+      category: 'coffee',
+      weight: 'كيلو'
+    };
+
+    // 2. تهيئة التطبيق عند الفتح
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      initSecurity();
+      checkSavedSession();
+      listenToCrossTabEvents();
+    });
+
+    function initSecurity() {
+      if (!localStorage.getItem(STORAGE_KEYS.PASS_BOSS)) {
+        localStorage.setItem(STORAGE_KEYS.PASS_BOSS, '1234');
+      }
+      if (!localStorage.getItem(STORAGE_KEYS.PASS_WORKER)) {
+        localStorage.setItem(STORAGE_KEYS.PASS_WORKER, '0000');
+      }
+      // إعداد تاريخ اليوم تلقائياً لحقل الغلة
+      const today = new Date().toISOString().split('T')[0];
+      const ghallahDateInput = document.getElementById('ghallahDate');
+      if (ghallahDateInput) ghallahDateInput.value = today;
+    }
+
+    // فحص إذا كان المستخدم مسجلاً مسبقاً (تثبيت الجلسة)
+    function checkSavedSession() {
+      const savedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+      if (savedUser === 'boss' || savedUser === 'worker') {
+        grantAccess(savedUser);
+      } else {
+        document.getElementById('loginScreen').classList.remove('hidden');
+        document.getElementById('mainApp').classList.add('hidden');
+      }
+    }
+
+    // 3. نظام تسجيل الدخول والصلاحيات
+    function selectRole(role) {
+      selectedLoginRole = role;
+      const bBtn = document.getElementById('selectBossBtn');
+      const wBtn = document.getElementById('selectWorkerBtn');
+      const err = document.getElementById('loginError');
+      err.classList.add('hidden');
+
+      if (role === 'boss') {
+        bBtn.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all bg-amber-600 text-white shadow-md flex items-center justify-center gap-2";
+        wBtn.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all text-stone-400 hover:text-white flex items-center justify-center gap-2";
+      } else {
+        wBtn.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all bg-amber-600 text-white shadow-md flex items-center justify-center gap-2";
+        bBtn.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all text-stone-400 hover:text-white flex items-center justify-center gap-2";
+      }
+    }
+
+    function performLogin() {
+      const inputPass = document.getElementById('loginPassInput').value.trim();
+      const err = document.getElementById('loginError');
+      const targetPass = selectedLoginRole === 'boss' ? 
+        localStorage.getItem(STORAGE_KEYS.PASS_BOSS) : 
+        localStorage.getItem(STORAGE_KEYS.PASS_WORKER);
+
+      if (inputPass === targetPass) {
+        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, selectedLoginRole);
+        document.getElementById('loginPassInput').value = '';
+        err.classList.add('hidden');
+        grantAccess(selectedLoginRole);
+      } else {
+        err.classList.remove('hidden');
+      }
+    }
+
+    function grantAccess(role) {
+      currentUserRole = role;
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('mainApp').classList.remove('hidden');
+
+      const badge = document.getElementById('headerRoleBadge');
+      const bossFeatures = document.querySelectorAll('.boss-only-feature');
+      const presenceCard = document.getElementById('workerPresenceCard');
+
+      if (role === 'boss') {
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>لوحة الـ Boss طارق</span>`;
+        bossFeatures.forEach(el => el.classList.remove('hidden'));
+        presenceCard.classList.remove('hidden');
+      } else {
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span><span>واجهة الورشة والتحضير</span>`;
+        bossFeatures.forEach(el => el.classList.add('hidden'));
+        presenceCard.classList.add('hidden');
+        // بدء إرسال نبضات النشاط للعامل
+        startWorkerHeartbeat();
+      }
+
+      switchTab('orders');
+      loadOrders();
+      renderWorkerPresence();
+      lucide.createIcons();
+    }
+
+    function logout() {
+      localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+      currentUserRole = null;
+      document.getElementById('loginScreen').classList.remove('hidden');
+      document.getElementById('mainApp').classList.add('hidden');
+      selectRole('boss');
+      lucide.createIcons();
+    }
+
+    // 4. نظام تتبع آخر ظهور للعامل (Heartbeat)
+    function startWorkerHeartbeat() {
+      function sendPulse() {
+        if (currentUserRole === 'worker') {
+          const now = new Date().toISOString();
+          localStorage.setItem(STORAGE_KEYS.WORKER_PULSE, now);
+        }
+      }
+      sendPulse();
+      setInterval(sendPulse, 20000); // نبضة كل 20 ثانية
+      window.addEventListener('click', sendPulse);
+    }
+
+    function renderWorkerPresence() {
+      if (currentUserRole !== 'boss') return;
+      const lastPulse = localStorage.getItem(STORAGE_KEYS.WORKER_PULSE);
+      const textElem = document.getElementById('workerLastSeenText');
+      const dot = document.getElementById('workerStatusIndicator');
+
+      if (!lastPulse) {
+        textElem.textContent = "لم يسجل دخول بعد";
+        dot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-stone-400 border-2 border-white";
+        return;
+      }
+
+      const diffSec = Math.floor((new Date() - new Date(lastPulse)) / 1000);
+
+      if (diffSec < 70) {
+        textElem.innerHTML = `<span class="text-emerald-600 font-extrabold">متصل الآن 🟢 بالورشة</span>`;
+        dot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white animate-pulse";
+      } else if (diffSec < 3600) {
+        const mins = Math.floor(diffSec / 60);
+        textElem.textContent = `آخر ظهور: منذ ${mins} دقيقة`;
+        dot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-amber-500 border-2 border-white";
+      } else {
+        const d = new Date(lastPulse);
+        textElem.textContent = `آخر ظهور: ${d.toLocaleTimeString('ar-SY', {hour:'2-digit', minute:'2-digit'})}`;
+        dot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-stone-400 border-2 border-white";
+      }
+    }
+
+    // 5. التبديل بين التبويبات (Tabs)
+    function switchTab(tabId) {
+      activeTab = tabId;
+      document.getElementById('ordersTabSection').classList.add('hidden');
+      document.getElementById('newOrderTabSection').classList.add('hidden');
+      document.getElementById('financeTabSection').classList.add('hidden');
+
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        btn.classList.remove('text-amber-500', 'font-bold');
+        btn.classList.add('text-stone-400');
+      });
+
+      if (tabId === 'orders') {
+        document.getElementById('ordersTabSection').classList.remove('hidden');
+        document.getElementById('tabBtn-orders').classList.add('text-amber-500', 'font-bold');
+        loadOrders();
+        renderWorkerPresence();
+      } else if (tabId === 'newOrder' && currentUserRole === 'boss') {
+        document.getElementById('newOrderTabSection').classList.remove('hidden');
+        document.getElementById('tabBtn-newOrder').classList.add('text-amber-500', 'font-bold');
+      } else if (tabId === 'finance' && currentUserRole === 'boss') {
+        document.getElementById('financeTabSection').classList.remove('hidden');
+        document.getElementById('tabBtn-finance').classList.add('text-amber-500', 'font-bold');
+        updateFinancialDashboard();
+      }
+      lucide.createIcons();
+    }
+
+    // 6. اختيار الأصناف ومنطق الأوزان المطلوب بدقة
+    function selectCoffeeItem(itemName, category) {
+      newOrderState.item = itemName;
+      newOrderState.category = category;
+
+      // تلوين الصنف المختار
+      document.querySelectorAll('.item-card').forEach(card => {
+        if (card.textContent.includes(itemName)) {
+          card.classList.remove('border-stone-200', 'bg-white', 'text-stone-700');
+          card.classList.add('border-amber-600', 'bg-amber-50', 'text-amber-900');
+        } else {
+          card.classList.remove('border-amber-600', 'bg-amber-50', 'text-amber-900');
+          card.classList.add('border-stone-200', 'bg-white', 'text-stone-700');
+        }
+      });
+
+      const weightWrapper = document.getElementById('weightSectionWrapper');
+      const zablaniNotice = document.getElementById('zablaniNotice');
+      const stdWeights = document.getElementById('standardWeightsGrid');
+      const customBtnWrapper = document.getElementById('customWeightBtnWrapper');
+      const customInputDiv = document.getElementById('customWeightInputDiv');
+
+      if (category === 'special_2kg') {
+        // كيس زبلطاني: كيلين حصراً وإخفاء كل الأوزان تحته
+        weightWrapper.classList.add('hidden');
+        zablaniNotice.classList.remove('hidden');
+        newOrderState.weight = 'كيلين (2 كغ)';
+      } 
+      else if (category === 'custom_only') {
+        // أصناف النوع الثاني: وزن مخصص حصراً
+        weightWrapper.classList.remove('hidden');
+        zablaniNotice.classList.add('hidden');
+        stdWeights.classList.add('hidden');
+        customBtnWrapper.classList.remove('hidden');
+        customInputDiv.classList.remove('hidden');
+        setWeight('مخصص');
+      } 
+      else if (category === 'instant_fixed') {
+        // 3in1، كابتشينو، هوت شوكلت: كيلو، نصف كيلو، أو مخصص
+        weightWrapper.classList.remove('hidden');
+        zablaniNotice.classList.add('hidden');
+        stdWeights.classList.remove('hidden');
+        customBtnWrapper.classList.remove('hidden');
+        
+        // إخفاء الربع كيلو والوقية لهذه الأصناف
+        document.getElementById('weightBtn-ربع كيلو').classList.add('hidden');
+        document.getElementById('weightBtn-وقية').classList.add('hidden');
+        setWeight('كيلو');
+      } 
+      else {
+        // أنواع البن الأصلية: كيلو، نص، ربع، وقية
+        weightWrapper.classList.remove('hidden');
+        zablaniNotice.classList.add('hidden');
+        stdWeights.classList.remove('hidden');
+        customBtnWrapper.classList.add('hidden');
+        customInputDiv.classList.add('hidden');
+
+        document.getElementById('weightBtn-ربع كيلو').classList.remove('hidden');
+        document.getElementById('weightBtn-وقية').classList.remove('hidden');
+        setWeight('كيلو');
+      }
+      lucide.createIcons();
+    }
+
+    function setWeight(w) {
+      newOrderState.weight = w;
+      document.querySelectorAll('.weight-btn').forEach(btn => {
+        btn.classList.remove('border-amber-600', 'bg-amber-50', 'text-amber-900');
+        btn.classList.add('border-stone-200', 'bg-white', 'text-stone-700');
+      });
+
+      const activeBtn = document.getElementById(`weightBtn-${w}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-stone-200', 'bg-white', 'text-stone-700');
+        activeBtn.classList.add('border-amber-600', 'bg-amber-50', 'text-amber-900');
+      }
+
+      const customInput = document.getElementById('customWeightInputDiv');
+      if (w === 'مخصص') {
+        customInput.classList.remove('hidden');
+      } else {
+        if (newOrderState.category !== 'custom_only') {
+          customInput.classList.add('hidden');
+        }
+      }
+    }
+
+    // 7. إنشاء وحفظ الطلبات
+    function handleCreateOrder(e) {
+      e.preventDefault();
+      let chosenWeight = newOrderState.weight;
+
+      if (chosenWeight === 'مخصص' || newOrderState.category === 'custom_only') {
+        const customVal = document.getElementById('customWeightVal').value.trim();
+        if (!customVal) {
+          alert('يرجى كتابة الوزن المخصص المطلوب في الحقل');
+          return;
+        }
+        chosenWeight = customVal;
+      }
+
+      const newOrder = {
+        id: 'T-' + Date.now().toString().slice(-4),
+        item: newOrderState.item,
+        weight: chosenWeight,
+        qty: parseInt(document.getElementById('orderQty').value) || 1,
+        price: parseFloat(document.getElementById('orderPrice').value) || 0,
+        customer: document.getElementById('orderCustomer').value.trim() || 'زبون مباشر',
+        notes: document.getElementById('orderNotes').value.trim(),
+        status: 'pending', // 'pending' | 'preparing' | 'ready' | 'completed'
+        createdAt: new Date().toISOString()
+      };
+
+      const orders = getOrders();
+      orders.unshift(newOrder);
+      saveOrders(orders);
+
+      // إعادة التعيين
+      document.getElementById('orderPrice').value = '';
+      document.getElementById('orderCustomer').value = '';
+      document.getElementById('orderNotes').value = '';
+      document.getElementById('customWeightVal').value = '';
+
+      switchTab('orders');
+    }
+
+    function getOrders() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS) || '[]');
+    }
+
+    function saveOrders(orders) {
+      localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
+      loadOrders();
+    }
+
+    // 8. تحديث حالة الطلبات (حصرية للعامل فقط)
+    function updateOrderStatusByWorker(orderId, newStatus) {
+      if (currentUserRole !== 'worker') {
+        alert('تعديل حالة الطلب متاح حصراً لهاتف العامل (الباريستا)!');
+        return;
+      }
+      const orders = getOrders();
+      const idx = orders.findIndex(o => o.id === orderId);
+      if (idx !== -1) {
+        orders[idx].status = newStatus;
+        saveOrders(orders);
+      }
+    }
+
+    function deleteOrder(orderId) {
+      if (currentUserRole !== 'boss') return;
+      if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) {
+        const orders = getOrders().filter(o => o.id !== orderId);
+        saveOrders(orders);
+      }
+    }
+
+    // 9. عرض وتصفية بطاقات الطلبات
+    function filterOrders(status) {
+      currentFilter = status;
+      ['all', 'pending', 'preparing', 'ready', 'completed'].forEach(s => {
+        const btn = document.getElementById(`filterBtn-${s}`);
+        if (s === status) {
+          btn.className = "px-3.5 py-2 rounded-xl bg-stone-800 text-white shadow-sm whitespace-nowrap";
+        } else {
+          btn.className = "px-3.5 py-2 rounded-xl bg-white text-stone-600 border border-stone-200 whitespace-nowrap";
+        }
+      });
+      loadOrders();
+    }
+
+    function loadOrders() {
+      const orders = getOrders();
+      
+      // تحديث العدادات
+      document.getElementById('count-all').textContent = orders.length;
+      document.getElementById('count-pending').textContent = orders.filter(o => o.status === 'pending').length;
+      document.getElementById('count-preparing').textContent = orders.filter(o => o.status === 'preparing').length;
+      document.getElementById('count-ready').textContent = orders.filter(o => o.status === 'ready').length;
+      document.getElementById('count-completed').textContent = orders.filter(o => o.status === 'completed').length;
+
+      const container = document.getElementById('ordersList');
+      const emptyState = document.getElementById('noOrdersState');
+
+      const filtered = orders.filter(o => currentFilter === 'all' ? true : o.status === currentFilter);
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      container.innerHTML = filtered.map(order => {
+        const isWorker = currentUserRole === 'worker';
+        const timeStr = new Date(order.createdAt).toLocaleTimeString('ar-SY', {hour: '2-digit', minute:'2-digit'});
+
+        // شارة الحالة
+        let statusBadge = '';
+        if (order.status === 'pending') {
+          statusBadge = `<span class="bg-amber-100 text-amber-900 border border-amber-200 px-2 py-0.5 rounded-lg text-[10px] font-black">قيد المتابعة</span>`;
+        } else if (order.status === 'preparing') {
+          statusBadge = `<span class="bg-blue-100 text-blue-900 border border-blue-200 px-2 py-0.5 rounded-lg text-[10px] font-black animate-pulse">جاري التحضير ⚙️</span>`;
+        } else if (order.status === 'ready') {
+          statusBadge = `<span class="bg-emerald-100 text-emerald-900 border border-emerald-200 px-2 py-0.5 rounded-lg text-[10px] font-black">جاهز للتسليم ☕</span>`;
+        } else {
+          statusBadge = `<span class="bg-stone-100 text-stone-600 px-2 py-0.5 rounded-lg text-[10px] font-bold">مكتمل ✅</span>`;
+        }
+
+        return `
+          <div class="bg-white rounded-2xl p-4 shadow-xs border border-stone-200/90 relative overflow-hidden">
+            <div class="flex items-start justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-black bg-stone-100 text-stone-700 px-2 py-0.5 rounded-md font-mono">${order.id}</span>
+                <h4 class="text-sm font-extrabold text-stone-900">${order.item}</h4>
+              </div>
+              <div class="flex items-center gap-1.5">
+                ${statusBadge}
+                ${currentUserRole === 'boss' ? `
+                  <button onclick="deleteOrder('${order.id}')" class="text-stone-300 hover:text-rose-500 p-1">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+
+            <!-- معلومات الوزن والكمية -->
+            <div class="grid grid-cols-2 gap-2 my-2.5 bg-stone-50 p-2.5 rounded-xl text-xs">
+              <div>
+                <span class="text-[10px] text-stone-400 font-bold block">الوزن المطلوب:</span>
+                <span class="font-black text-amber-900">${order.weight}</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-stone-400 font-bold block">الكمية:</span>
+                <span class="font-black text-stone-800">${order.qty} كيس</span>
+              </div>
+            </div>
+
+            ${order.notes ? `
+              <div class="text-[11px] text-stone-600 bg-amber-50/60 p-2 rounded-lg mb-2.5 flex items-center gap-1.5 border border-amber-100/80">
+                <i data-lucide="info" class="w-3.5 h-3.5 text-amber-700 flex-shrink-0"></i>
+                <span>ملاحظة: ${order.notes}</span>
+              </div>
+            ` : ''}
+
+            <div class="flex items-center justify-between pt-2 border-t border-stone-100 text-[11px]">
+              <span class="text-stone-400 font-medium">${order.customer} • ${timeStr}</span>
+              <span class="font-black text-stone-900">${order.price.toLocaleString()} ل.س</span>
+            </div>
+
+            <!-- أزرار التحكم بالحالة: مخصصة حصراً للعامل -->
+            ${isWorker ? `
+              <div class="mt-3 pt-3 border-t border-stone-100 flex gap-1.5 text-xs font-bold">
+                <button onclick="updateOrderStatusByWorker('${order.id}', 'preparing')" class="flex-1 py-2 rounded-xl ${order.status === 'preparing' ? 'bg-blue-600 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}">
+                  تحضير
+                </button>
+                <button onclick="updateOrderStatusByWorker('${order.id}', 'ready')" class="flex-1 py-2 rounded-xl ${order.status === 'ready' ? 'bg-emerald-600 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}">
+                  جاهز
+                </button>
+                <button onclick="updateOrderStatusByWorker('${order.id}', 'completed')" class="py-2 px-3 rounded-xl bg-stone-800 text-white">
+                  تم التسليم
+                </button>
+              </div>
+            ` : `
+              <div class="mt-2 text-left">
+                <span class="text-[10px] text-stone-400 font-bold">تحديث الحالة من هاتف الباريستا</span>
+              </div>
+            `}
+
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // 10. الإدارة المالية والغلّة والرسم البياني
+    function getGhallah() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEYS.GHALLAH) || '[]');
+    }
+
+    function handleAddWeeklyGhallah(e) {
+      e.preventDefault();
+      const amount = parseFloat(document.getElementById('ghallahAmount').value) || 0;
+      const date = document.getElementById('ghallahDate').value;
+      const notes = document.getElementById('ghallahNotes').value.trim() || 'غلة أسبوعية';
+
+      const entry = {
+        id: 'G-' + Date.now().toString().slice(-4),
+        amount,
+        date,
+        notes,
+        createdAt: new Date().toISOString()
+      };
+
+      const list = getGhallah();
+      list.unshift(entry);
+      localStorage.setItem(STORAGE_KEYS.GHALLAH, JSON.stringify(list));
+
+      document.getElementById('ghallahAmount').value = '';
+      document.getElementById('ghallahNotes').value = '';
+      updateFinancialDashboard();
+      alert('تم إدراج الغلة بنجاح في الصندوق المالي');
+    }
+
+    function toggleGhallahHistory() {
+      const sec = document.getElementById('ghallahHistorySection');
+      sec.classList.toggle('hidden');
+    }
+
+    function deleteGhallahItem(id) {
+      const list = getGhallah().filter(g => g.id !== id);
+      localStorage.setItem(STORAGE_KEYS.GHALLAH, JSON.stringify(list));
+      updateFinancialDashboard();
+    }
+
+    function updateFinancialDashboard() {
+      const orders = getOrders();
+      const ghallahList = getGhallah();
+
+      const ordersTotal = orders.reduce((sum, o) => sum + (o.price || 0), 0);
+      const ghallahTotal = ghallahList.reduce((sum, g) => sum + (g.amount || 0), 0);
+      const grandTotal = ordersTotal + ghallahTotal;
+
+      document.getElementById('financeTotalOrders').textContent = ordersTotal.toLocaleString() + ' ل.س';
+      document.getElementById('financeGrandTotal').textContent = grandTotal.toLocaleString() + ' ل.س';
+
+      // رسم جدول الغلال
+      const ghallahListElem = document.getElementById('ghallahList');
+      ghallahListElem.innerHTML = ghallahList.map(g => `
+        <div class="flex items-center justify-between bg-stone-50 p-2 rounded-lg border border-stone-100">
+          <div>
+            <span class="font-extrabold text-stone-800">${g.amount.toLocaleString()} ل.س</span>
+            <span class="text-[10px] text-stone-500 block">${g.date} (${g.notes})</span>
+          </div>
+          <button onclick="deleteGhallahItem('${g.id}')" class="text-rose-400 hover:text-rose-600 p-1">
+            <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      `).join('') || '<p class="text-stone-400 text-center py-2 text-xs">لا توجد غلال مسجلة بعد</p>';
+
+      renderSalesChart();
+      lucide.createIcons();
+    }
+
+    function setChartRange(range) {
+      chartTimeRange = range;
+      ['day', 'week', 'month', 'year'].forEach(r => {
+        const btn = document.getElementById(`chartRange-${r}`);
+        if (r === range) {
+          btn.className = "px-2.5 py-1 rounded-lg bg-white text-stone-800 shadow-xs";
+        } else {
+          btn.className = "px-2.5 py-1 rounded-lg text-stone-500 hover:text-stone-800";
+        }
+      });
+      renderSalesChart();
+    }
+
+    function renderSalesChart() {
+      const ctx = document.getElementById('salesChartCanvas');
+      if (!ctx) return;
+
+      if (salesChartInstance) {
+        salesChartInstance.destroy();
+      }
+
+      // بناء بيانات تقريبية متناغمة مع المدى المختار
+      let labels = [];
+      let ordersData = [];
+      let ghallahData = [];
+
+      if (chartTimeRange === 'day') {
+        labels = ['8 ص', '11 ص', '2 ظ', '5 ع', '8 م', '11 م'];
+        ordersData = [15, 30, 45, 80, 110, 60];
+        ghallahData = [0, 0, 0, 0, 90, 0];
+      } else if (chartTimeRange === 'week') {
+        labels = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+        ordersData = [120, 190, 150, 220, 280, 310, 240];
+        ghallahData = [0, 0, 0, 0, 0, 450, 0];
+      } else if (chartTimeRange === 'month') {
+        labels = ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'];
+        ordersData = [800, 1100, 950, 1300];
+        ghallahData = [400, 500, 450, 600];
+      } else {
+        labels = ['كانون', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين 1', 'تشرين 2', 'كانون 1'];
+        ordersData = [3000, 3500, 4200, 4800, 5100, 5800, 6200, 6000, 6400, 7000, 7200, 8000];
+        ghallahData = [1500, 1600, 1800, 2000, 2200, 2400, 2500, 2300, 2600, 2900, 3100, 3400];
+      }
+
+      salesChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'مبيعات الطلبات',
+              data: ordersData,
+              borderColor: '#9C6644',
+              backgroundColor: 'rgba(156, 102, 68, 0.1)',
+              fill: true,
+              tension: 0.3,
+              borderWidth: 2.5
+            },
+            {
+              label: 'الغلّة المباشرة',
+              data: ghallahData,
+              borderColor: '#059669',
+              backgroundColor: 'transparent',
+              borderDash: [5, 5],
+              tension: 0.3,
+              borderWidth: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: { boxWidth: 10, font: { family: 'Tajawal', size: 10 } }
+            }
+          },
+          scales: {
+            y: { grid: { color: '#f3f4f6' }, ticks: { font: { family: 'Tajawal', size: 9 } } },
+            x: { grid: { display: false }, ticks: { font: { family: 'Tajawal', size: 9 } } }
+          }
+        }
+      });
+    }
+
+    // 11. تصدير كشف الشهر إلى ملف Excel / CSV
+    function exportMonthlyReportCSV() {
+      const orders = getOrders();
+      if (orders.length === 0) {
+        alert('لا توجد طلبات لتصديرها!');
+        return;
+      }
+
+      let csv = "\uFEFFرقم الطلب,الصنف,الوزن,الكمية,المبلغ,الزبون,الحالة,التاريخ\n";
+      orders.forEach(o => {
+        csv += `"${o.id}","${o.item}","${o.weight}","${o.qty}","${o.price}","${o.customer}","${o.status}","${o.createdAt}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute("download", `تقرير_بن_طارق_${new Date().toISOString().slice(0,7)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // 12. إدارة وتغيير كلمات السر
+    function openSettingsModal() {
+      document.getElementById('settingsModal').classList.remove('hidden');
+    }
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.add('hidden');
+    }
+    function saveNewPasswords() {
+      const bossP = document.getElementById('changeBossPass').value.trim();
+      const workerP = document.getElementById('changeWorkerPass').value.trim();
+
+      if (bossP) localStorage.setItem(STORAGE_KEYS.PASS_BOSS, bossP);
+      if (workerP) localStorage.setItem(STORAGE_KEYS.PASS_WORKER, workerP);
+
+      alert('تم تحديث كلمات المرور بنجاح!');
+      closeSettingsModal();
+    }
+
+    // الاستماع لأي تغييرات تحدث في النوافذ أو التبويبات الأخرى
+    function listenToCrossTabEvents() {
+      window.addEventListener('storage', (e) => {
+        if (e.key === STORAGE_KEYS.ORDERS) loadOrders();
+        if (e.key === STORAGE_KEYS.WORKER_PULSE) renderWorkerPresence();
+        if (e.key === STORAGE_KEYS.GHALLAH) updateFinancialDashboard();
+      });
+    }
+  </script>
+</body>
+</html>
