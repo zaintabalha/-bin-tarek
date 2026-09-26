@@ -131,10 +131,16 @@
         </div>
 
         <div class="flex items-center gap-2">
-          <!-- إعدادات وتغيير كلمة السر -->
-          <button onclick="openSettingsModal()" class="w-9 h-9 rounded-xl bg-[#231711] hover:bg-[#301f17] text-amber-300 border border-amber-900/40 flex items-center justify-center transition-colors">
+          <!-- زر تفعيل الإشعارات والتنبيهات للسامسونج -->
+          <button id="btnRequestNotification" onclick="requestNotificationPermission()" class="w-9 h-9 rounded-xl bg-[#231711] hover:bg-[#301f17] text-amber-300 border border-amber-900/40 flex items-center justify-center transition-colors" title="إذن الإشعارات">
+            <i data-lucide="bell" class="w-4 h-4"></i>
+          </button>
+          
+          <!-- إعدادات وتغيير كلمة السر (يظهر حصرياً للـ Boss فقط) -->
+          <button id="bossSettingsBtn" onclick="openSettingsModal()" class="w-9 h-9 rounded-xl bg-[#231711] hover:bg-[#301f17] text-amber-300 border border-amber-900/40 flex items-center justify-center transition-colors" title="إعدادات الأمان">
             <i data-lucide="settings" class="w-4 h-4"></i>
           </button>
+
           <!-- تسجيل الخروج -->
           <button onclick="logout()" class="w-9 h-9 rounded-xl bg-[#231711] hover:bg-rose-950 text-stone-300 hover:text-rose-400 border border-amber-900/40 flex items-center justify-center transition-colors">
             <i data-lucide="log-out" class="w-4 h-4"></i>
@@ -222,7 +228,7 @@
               </button>
             </div>
 
-            <!-- شبكة اختيار الأصناف (تختفي فور الاختيار) -->
+            <!-- شبكة اختيار الأصناف -->
             <div id="itemsSelectionSection">
               <label class="block text-xs font-extrabold text-amber-200/80 mb-2">اختر الصنف :</label>
               <div class="grid grid-cols-2 gap-2 text-xs font-bold" id="itemSelectionGrid">
@@ -461,13 +467,13 @@
 
   </div>
 
-  <!-- Modal تغيير كلمات السر -->
+  <!-- Modal تغيير كلمات السر (متاح حصراً للـ Boss لتعديل الحسابين) -->
   <div id="settingsModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-[#18100c] rounded-3xl p-5 w-full max-w-sm shadow-2xl border border-amber-800/60">
       <div class="flex items-center justify-between pb-3 border-b border-amber-900/30 mb-4">
         <h3 class="text-sm font-extrabold text-amber-100 flex items-center gap-2">
           <i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i>
-          <span>إعدادات الأمان وكلمات السر</span>
+          <span>إعدادات الأمان (الـ Boss فقط)</span>
         </h3>
         <button onclick="closeSettingsModal()" class="text-amber-300/70 hover:text-white">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -475,16 +481,18 @@
       </div>
 
       <div class="space-y-3">
+        <p class="text-[11px] text-amber-200/60">تعديل كلمات المرور سحابياً لكل من حساب البوس والعامل:</p>
         <div>
-          <label class="block text-[11px] font-bold text-amber-200/70 mb-1">كلمة مرور الـ Boss</label>
+          <label class="block text-[11px] font-bold text-amber-200/70 mb-1">كلمة مرور الـ Boss الحالية أو الجديدة</label>
           <input type="password" id="changeBossPass" placeholder="كلمة سر البوس..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-amber-500">
         </div>
         <div>
           <label class="block text-[11px] font-bold text-amber-200/70 mb-1">كلمة مرور العامل (الباريستا)</label>
           <input type="password" id="changeWorkerPass" placeholder="كلمة سر العامل..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-amber-500">
         </div>
-        <button onclick="saveNewPasswords()" class="w-full py-2.5 mt-2 bg-amber-700 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-lg transition-all">
-          حفظ التغييرات
+        <button onclick="saveNewPasswords()" class="w-full py-2.5 mt-2 bg-amber-700 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+          <i data-lucide="save" class="w-4 h-4"></i>
+          <span>حفظ التعديلات في السحابة</span>
         </button>
       </div>
     </div>
@@ -544,6 +552,7 @@
     let ordersCache = [];
     let ghallahCache = [];
     let workerLastSeenTimestamp = null;
+    let previousOrdersCount = 0;
 
     let newOrderState = {
       item: 'سوبر',
@@ -577,12 +586,29 @@
       setInterval(renderWorkerPresence, 15000);
     });
 
+    // جلب أو تهيئة كلمات السر سحابياً
     function initSecurity() {
       if (!localStorage.getItem(STORAGE_KEYS.PASS_BOSS)) {
         localStorage.setItem(STORAGE_KEYS.PASS_BOSS, '1234');
       }
       if (!localStorage.getItem(STORAGE_KEYS.PASS_WORKER)) {
         localStorage.setItem(STORAGE_KEYS.PASS_WORKER, '0000');
+      }
+
+      if (isCloud && db) {
+        db.collection("system").doc("passwords").onSnapshot(doc => {
+          if (doc.exists) {
+            const data = doc.data();
+            if (data.boss) localStorage.setItem(STORAGE_KEYS.PASS_BOSS, data.boss);
+            if (data.worker) localStorage.setItem(STORAGE_KEYS.PASS_WORKER, data.worker);
+          } else {
+            // حفظ الافتراضية بالسحابة لأول مرة
+            db.collection("system").doc("passwords").set({
+              boss: '1234',
+              worker: '0000'
+            });
+          }
+        });
       }
     }
 
@@ -613,6 +639,14 @@
         snapshot.forEach(doc => {
           list.push({ id: doc.id, ...doc.data() });
         });
+
+        // تشغيل إشعار واهتزاز في حال وصول طلب جديد
+        if (previousOrdersCount > 0 && list.length > previousOrdersCount) {
+          const newest = list[0];
+          triggerNativePushNotification(`طلب قهوة جديد: ${newest.item}`, `الوزن: ${newest.weight} - الكمية: ${newest.qty} (${newest.customer})`);
+        }
+        previousOrdersCount = list.length;
+
         ordersCache = list;
         localStorage.setItem(STORAGE_KEYS.ORDERS_LOCAL, JSON.stringify(list));
         loadOrders();
@@ -672,6 +706,7 @@
         document.getElementById('loginPassInput').value = '';
         err.classList.add('hidden');
         grantAccess(selectedLoginRole);
+        requestNotificationPermission(); // طلب إذن الإشعارات فور الدخول للسامسونج
       } else {
         err.classList.remove('hidden');
       }
@@ -685,15 +720,18 @@
       const badge = document.getElementById('headerRoleBadge');
       const bossFeatures = document.querySelectorAll('.boss-only-feature');
       const presenceCard = document.getElementById('workerPresenceCard');
+      const bossSettingsBtn = document.getElementById('bossSettingsBtn');
 
       if (role === 'boss') {
         badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>لوحة الـ Boss طارق</span>`;
         bossFeatures.forEach(el => el.classList.remove('hidden'));
         presenceCard.classList.remove('hidden');
+        if (bossSettingsBtn) bossSettingsBtn.classList.remove('hidden'); // يظهر للبوس
       } else {
         badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span><span>واجهة الورشة والتحضير</span>`;
         bossFeatures.forEach(el => el.classList.add('hidden'));
         presenceCard.classList.add('hidden');
+        if (bossSettingsBtn) bossSettingsBtn.classList.add('hidden'); // يختفي تماماً عن العامل
         triggerWorkerPulse();
       }
 
@@ -793,13 +831,12 @@
     }
 
     // -------------------------------------------------------------------
-    // 7. الأصناف والأوزان (مع الإخفاء الفوري لتسهيل الاستخدام)
+    // 7. الأصناف والأوزان (إخفاء باقي الأصناف وتحديد الصنف بدقة)
     // -------------------------------------------------------------------
     function selectCoffeeItem(itemName, category) {
       newOrderState.item = itemName;
       newOrderState.category = category;
 
-      // تحديد الزر بدقة عبر data-item
       document.querySelectorAll('.item-card').forEach(card => {
         if (card.getAttribute('data-item') === itemName) {
           card.classList.remove('border-amber-900/40', 'bg-[#1d140f]', 'text-stone-300');
@@ -810,7 +847,6 @@
         }
       });
 
-      // إخفاء شبكة الأصناف وإظهار شريط الصنف المختار
       document.getElementById('itemsSelectionSection').classList.add('hidden');
       document.getElementById('selectedItemBanner').classList.remove('hidden');
       document.getElementById('selectedItemNameText').textContent = itemName;
@@ -979,7 +1015,7 @@
     }
 
     // -------------------------------------------------------------------
-    // 9. عرض وتصفية الطلبات (تصميم ليلي فاخر للبطاقات)
+    // 9. عرض وتصفية الطلبات
     // -------------------------------------------------------------------
     function filterOrders(status) {
       currentFilter = status;
@@ -1303,23 +1339,94 @@
     }
 
     // -------------------------------------------------------------------
-    // 12. إعدادات كلمات السر وتنبيه الصوت
+    // 12. إعدادات كلمات السر السحابية (حصراً للـ Boss)
     // -------------------------------------------------------------------
     function openSettingsModal() {
+      if (currentUserRole !== 'boss') {
+        alert('صلاحية تعديل كلمات المرور محصورة بالـ Boss فقط!');
+        return;
+      }
+      document.getElementById('changeBossPass').value = localStorage.getItem(STORAGE_KEYS.PASS_BOSS) || '';
+      document.getElementById('changeWorkerPass').value = localStorage.getItem(STORAGE_KEYS.PASS_WORKER) || '';
       document.getElementById('settingsModal').classList.remove('hidden');
     }
+
     function closeSettingsModal() {
       document.getElementById('settingsModal').classList.add('hidden');
     }
+
     function saveNewPasswords() {
+      if (currentUserRole !== 'boss') return;
+
       const bossP = document.getElementById('changeBossPass').value.trim();
       const workerP = document.getElementById('changeWorkerPass').value.trim();
 
-      if (bossP) localStorage.setItem(STORAGE_KEYS.PASS_BOSS, bossP);
-      if (workerP) localStorage.setItem(STORAGE_KEYS.PASS_WORKER, workerP);
+      if (!bossP || !workerP) {
+        alert('يرجى عدم ترك أي من كلمات المرور فارغة');
+        return;
+      }
 
-      alert('تم تحديث كلمات المرور بنجاح!');
-      closeSettingsModal();
+      if (isCloud && db) {
+        db.collection("system").doc("passwords").set({
+          boss: bossP,
+          worker: workerP,
+          updatedAt: Date.now()
+        }, { merge: true }).then(() => {
+          localStorage.setItem(STORAGE_KEYS.PASS_BOSS, bossP);
+          localStorage.setItem(STORAGE_KEYS.PASS_WORKER, workerP);
+          alert('تم تحديث كلمات المرور سحابياً بنجاح لكلا الحسابين!');
+          closeSettingsModal();
+        }).catch(err => {
+          alert('خطأ أثناء الحفظ السحابي: ' + err.message);
+        });
+      } else {
+        localStorage.setItem(STORAGE_KEYS.PASS_BOSS, bossP);
+        localStorage.setItem(STORAGE_KEYS.PASS_WORKER, workerP);
+        alert('تم تحديث كلمات المرور محلياً بنجاح!');
+        closeSettingsModal();
+      }
+    }
+
+    // -------------------------------------------------------------------
+    // 13. نظام إشعارات واهتزاز أجهزة Android (APK / Samsung)
+    // -------------------------------------------------------------------
+    function requestNotificationPermission() {
+      if (!("Notification" in window)) {
+        console.warn("المتصفح أو بيئة الـ Webview لا تدعم الـ Notifications");
+        return;
+      }
+
+      if (Notification.permission === "default") {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            triggerNativePushNotification("بن طارق ☕", "تم تفعيل الإشعارات بنجاح لجهازك!");
+          }
+        });
+      } else if (Notification.permission === "granted") {
+        triggerNativePushNotification("بن طارق ☕", "نظام التنبيهات يعمل بشكل ممتاز!");
+      }
+    }
+
+    function triggerNativePushNotification(title, body) {
+      playBeep();
+
+      // اهتزاز هاتف السامسونج
+      if ("vibrate" in navigator) {
+        navigator.vibrate([200, 100, 200, 100, 300]);
+      }
+
+      // إشعار شريط الحالة لنظام أندرويد
+      if ("Notification" in window && Notification.permission === "granted") {
+        try {
+          new Notification(title, {
+            body: body,
+            icon: "https://cdn-icons-png.flaticon.com/512/924/924514.png",
+            badge: "https://cdn-icons-png.flaticon.com/512/924/924514.png"
+          });
+        } catch (e) {
+          console.warn("تعذر إطلاق الإشعار المباشر:", e);
+        }
+      }
     }
 
     function playBeep() {
