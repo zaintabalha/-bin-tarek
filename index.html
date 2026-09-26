@@ -205,33 +205,50 @@
 
           <form id="orderForm" onsubmit="handleCreateOrder(event)" class="space-y-4">
             
-            <!-- 1. اختيار الصنف -->
-            <div>
+            <!-- الصنف المختار بعد الإخفاء -->
+            <div id="selectedItemBanner" class="hidden p-3.5 bg-gradient-to-r from-amber-950/80 to-[#221711] border border-amber-600/50 rounded-2xl flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-amber-600/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
+                  <i data-lucide="check" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <span class="text-[10px] text-amber-200/60 font-bold block">الصنف المختار:</span>
+                  <h4 id="selectedItemNameText" class="text-sm font-black text-amber-300">سوبر</h4>
+                </div>
+              </div>
+              <button type="button" onclick="showAllItemsGrid()" class="px-3 py-1.5 rounded-xl bg-[#2e1d15] hover:bg-[#3d261c] text-amber-200 text-xs font-bold border border-amber-700/50 flex items-center gap-1 transition-all">
+                <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                <span>تغيير</span>
+              </button>
+            </div>
+
+            <!-- شبكة اختيار الأصناف (تختفي فور الاختيار) -->
+            <div id="itemsSelectionSection">
               <label class="block text-xs font-extrabold text-amber-200/80 mb-2">اختر الصنف :</label>
               <div class="grid grid-cols-2 gap-2 text-xs font-bold" id="itemSelectionGrid">
-                <button type="button" onclick="selectCoffeeItem('سوبر', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-600 bg-amber-950/60 text-amber-200 flex flex-col items-center text-center gap-1 transition-all">
+                <button type="button" data-item="سوبر" onclick="selectCoffeeItem('سوبر', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
                   <i data-lucide="coffee" class="w-4 h-4 text-amber-400"></i>
                   <span>سوبر</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('وسط', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
+                <button type="button" data-item="وسط" onclick="selectCoffeeItem('وسط', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
                   <i data-lucide="coffee" class="w-4 h-4 text-amber-400"></i>
                   <span>وسط</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('بلا هيل', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
+                <button type="button" data-item="بلا هيل" onclick="selectCoffeeItem('بلا هيل', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
                   <i data-lucide="coffee" class="w-4 h-4 text-amber-400"></i>
                   <span>بلا هيل</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('موكا بلا هيل', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
+                <button type="button" data-item="موكا بلا هيل" onclick="selectCoffeeItem('موكا بلا هيل', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
                   <i data-lucide="coffee" class="w-4 h-4 text-amber-400"></i>
                   <span>موكا بلا هيل</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('غامقة هيل اكسترا', 'coffee')" class="item-card col-span-2 p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex items-center justify-center gap-2 transition-all">
+                <button type="button" data-item="غامقة هيل اكسترا" onclick="selectCoffeeItem('غامقة هيل اكسترا', 'coffee')" class="item-card col-span-2 p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex items-center justify-center gap-2 transition-all">
                   <i data-lucide="flame" class="w-4 h-4 text-amber-500"></i>
                   <span>غامقة هيل اكسترا</span>
                 </button>
 
                 <!-- كيس زبلطاني (كيلين حصراً) -->
-                <button type="button" onclick="selectCoffeeItem('كيس زبلطاني', 'special_2kg')" class="item-card col-span-2 p-3.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-amber-100 hover:border-amber-500 flex items-center justify-between px-4 transition-all">
+                <button type="button" data-item="كيس زبلطاني" onclick="selectCoffeeItem('كيس زبلطاني', 'special_2kg')" class="item-card col-span-2 p-3.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-amber-100 hover:border-amber-500 flex items-center justify-between px-4 transition-all">
                   <div class="flex items-center gap-2">
                     <i data-lucide="package" class="w-5 h-5 text-amber-400"></i>
                     <span class="font-extrabold">كيس زبلطاني</span>
@@ -243,15 +260,15 @@
                 <div class="col-span-2 pt-2 border-t border-amber-900/30">
                   <p class="text-[11px] font-bold text-amber-200/50 mb-2">المشروبات الإضافية (كيلو / نصف كيلو / مخصص):</p>
                 </div>
-                <button type="button" onclick="selectCoffeeItem('3in1', 'instant_fixed')" class="item-card p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
+                <button type="button" data-item="3in1" onclick="selectCoffeeItem('3in1', 'instant_fixed')" class="item-card p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
                   <i data-lucide="cup-soda" class="w-4 h-4 text-amber-400"></i>
                   <span>3in1</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('كابتشينو', 'instant_fixed')" class="item-card p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
+                <button type="button" data-item="كابتشينو" onclick="selectCoffeeItem('كابتشينو', 'instant_fixed')" class="item-card p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
                   <i data-lucide="cup-soda" class="w-4 h-4 text-amber-400"></i>
                   <span>كابتشينو</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('هوت شوكلت', 'instant_fixed')" class="item-card col-span-2 p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex items-center justify-center gap-2 transition-all">
+                <button type="button" data-item="هوت شوكلت" onclick="selectCoffeeItem('هوت شوكلت', 'instant_fixed')" class="item-card col-span-2 p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex items-center justify-center gap-2 transition-all">
                   <i data-lucide="cup-soda" class="w-4 h-4 text-amber-400"></i>
                   <span>هوت شوكلت</span>
                 </button>
@@ -260,72 +277,76 @@
                 <div class="col-span-2 pt-2 border-t border-amber-900/30">
                   <p class="text-[11px] font-bold text-amber-200/50 mb-2">أصناف النوع الثاني (وزن مخصص حصراً):</p>
                 </div>
-                <button type="button" onclick="selectCoffeeItem('3in1 نوع ثاني', 'custom_only')" class="item-card p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 text-center transition-all">
+                <button type="button" data-item="3in1 نوع ثاني" onclick="selectCoffeeItem('3in1 نوع ثاني', 'custom_only')" class="item-card p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 text-center transition-all">
                   <span>3in1 نوع ثاني</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('كابتشينو نوع ثاني', 'custom_only')" class="item-card p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 text-center transition-all">
+                <button type="button" data-item="كابتشينو نوع ثاني" onclick="selectCoffeeItem('كابتشينو نوع ثاني', 'custom_only')" class="item-card p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 text-center transition-all">
                   <span>كابتشينو نوع ثاني</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('هوت شوكلت نوع ثاني', 'custom_only')" class="item-card col-span-2 p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 text-center transition-all">
+                <button type="button" data-item="هوت شوكلت نوع ثاني" onclick="selectCoffeeItem('هوت شوكلت نوع ثاني', 'custom_only')" class="item-card col-span-2 p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 text-center transition-all">
                   <span>هوت شوكلت نوع ثاني</span>
                 </button>
               </div>
             </div>
 
-            <!-- 2. خيارات الأوزان -->
-            <div id="weightSectionWrapper">
-              <label class="block text-xs font-extrabold text-amber-200/80 mb-2">تحديد الوزن :</label>
-              <div id="standardWeightsGrid" class="grid grid-cols-2 gap-2 text-xs font-bold">
-                <button type="button" onclick="setWeight('كيلو')" id="weightBtn-كيلو" class="weight-btn p-3 rounded-2xl border-2 border-amber-600 bg-amber-950/60 text-amber-200 text-center transition-all">كيلو (1 كغ)</button>
-                <button type="button" onclick="setWeight('نص كيلو')" id="weightBtn-نص كيلو" class="weight-btn p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 text-center transition-all">نص كيلو (500غ)</button>
-                <button type="button" onclick="setWeight('ربع كيلو')" id="weightBtn-ربع كيلو" class="weight-btn p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 text-center transition-all">ربع كيلو (250غ)</button>
-                <button type="button" onclick="setWeight('وقية')" id="weightBtn-وقية" class="weight-btn p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 text-center transition-all">وقية (200غ)</button>
+            <!-- تفاصيل الطلب التي تبقى ظاهرة بعد اختيار الصنف -->
+            <div id="orderDetailsSection">
+              <!-- 2. خيارات الأوزان -->
+              <div id="weightSectionWrapper">
+                <label class="block text-xs font-extrabold text-amber-200/80 mb-2">تحديد الوزن :</label>
+                <div id="standardWeightsGrid" class="grid grid-cols-2 gap-2 text-xs font-bold">
+                  <button type="button" onclick="setWeight('كيلو')" id="weightBtn-كيلو" class="weight-btn p-3 rounded-2xl border-2 border-amber-600 bg-amber-950/60 text-amber-200 text-center transition-all">كيلو (1 كغ)</button>
+                  <button type="button" onclick="setWeight('نص كيلو')" id="weightBtn-نص كيلو" class="weight-btn p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 text-center transition-all">نص كيلو (500غ)</button>
+                  <button type="button" onclick="setWeight('ربع كيلو')" id="weightBtn-ربع كيلو" class="weight-btn p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 text-center transition-all">ربع كيلو (250غ)</button>
+                  <button type="button" onclick="setWeight('وقية')" id="weightBtn-وقية" class="weight-btn p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 text-center transition-all">وقية (200غ)</button>
+                </div>
+
+                <div id="customWeightBtnWrapper" class="mt-2 hidden">
+                  <button type="button" onclick="setWeight('مخصص')" id="weightBtn-مخصص" class="w-full py-2.5 rounded-2xl border-2 border-dashed border-amber-800/60 bg-[#1d140f] text-amber-300 font-bold text-xs hover:border-amber-500 flex items-center justify-center gap-2">
+                    <i data-lucide="edit-3" class="w-4 h-4"></i>
+                    <span>وزن مخصص (إدخال يدوي)</span>
+                  </button>
+                </div>
+
+                <div id="customWeightInputDiv" class="mt-2 hidden">
+                  <input type="text" id="customWeightVal" placeholder="اكتب الوزن المطلوب (مثال: 750 غرام، كيس 300غ...)" class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-4 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-amber-500">
+                </div>
               </div>
 
-              <div id="customWeightBtnWrapper" class="mt-2 hidden">
-                <button type="button" onclick="setWeight('مخصص')" id="weightBtn-مخصص" class="w-full py-2.5 rounded-2xl border-2 border-dashed border-amber-800/60 bg-[#1d140f] text-amber-300 font-bold text-xs hover:border-amber-500 flex items-center justify-center gap-2">
-                  <i data-lucide="edit-3" class="w-4 h-4"></i>
-                  <span>وزن مخصص (إدخال يدوي)</span>
-                </button>
+              <!-- إشعار وزن الزبلطاني الثابت -->
+              <div id="zablaniNotice" class="hidden p-3 bg-amber-950/60 border border-amber-700/60 rounded-2xl text-xs font-bold text-amber-200 flex items-center gap-2">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-amber-400"></i>
+                <span>الوزن مقفل تلقائياً: 2 كغ (كيلين)</span>
               </div>
 
-              <div id="customWeightInputDiv" class="mt-2 hidden">
-                <input type="text" id="customWeightVal" placeholder="اكتب الوزن المطلوب (مثال: 750 غرام، كيس 300غ...)" class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-4 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-amber-500">
+              <!-- تفاصيل إضافية -->
+              <div class="grid grid-cols-2 gap-3 pt-3">
+                <div>
+                  <label class="block text-[11px] font-bold text-amber-200/70 mb-1">الكمية (أكياس)</label>
+                  <input type="number" id="orderQty" value="1" min="1" class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-center text-sm font-black text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-amber-200/70 mb-1">السعر الإجمالي (ل.س)</label>
+                  <input type="number" id="orderPrice" placeholder="المبلغ..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-center text-sm font-black text-amber-400 focus:outline-none focus:border-amber-500" required>
+                </div>
               </div>
-            </div>
 
-            <!-- إشعار وزن الزبلطاني الثابت -->
-            <div id="zablaniNotice" class="hidden p-3 bg-amber-950/60 border border-amber-700/60 rounded-2xl text-xs font-bold text-amber-200 flex items-center gap-2">
-              <i data-lucide="check-circle-2" class="w-4 h-4 text-amber-400"></i>
-              <span>الوزن مقفل تلقائياً: 2 كغ (كيلين)</span>
-            </div>
-
-            <!-- تفاصيل إضافية -->
-            <div class="grid grid-cols-2 gap-3 pt-2">
-              <div>
-                <label class="block text-[11px] font-bold text-amber-200/70 mb-1">الكمية (أكياس)</label>
-                <input type="number" id="orderQty" value="1" min="1" class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-center text-sm font-black text-white focus:outline-none focus:border-amber-500">
+              <div class="pt-2">
+                <label class="block text-[11px] font-bold text-amber-200/70 mb-1">اسم الزبون / جهة التوصيل (اختياري)</label>
+                <input type="text" id="orderCustomer" placeholder="زبون مباشر، كافيه النجمة، توصيل..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-amber-500">
               </div>
-              <div>
-                <label class="block text-[11px] font-bold text-amber-200/70 mb-1">السعر الإجمالي (ل.س)</label>
-                <input type="number" id="orderPrice" placeholder="المبلغ..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-center text-sm font-black text-amber-400 focus:outline-none focus:border-amber-500" required>
+
+              <div class="pt-2">
+                <label class="block text-[11px] font-bold text-amber-200/70 mb-1">ملاحظات الطحن أو التجهيز</label>
+                <input type="text" id="orderNotes" placeholder="ناعمة جداً، ركوة، مع وش، كيس مضغوط..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-amber-500">
               </div>
+
+              <button type="submit" class="w-full mt-4 py-3.5 bg-gradient-to-r from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 active:scale-95 text-white font-black text-sm rounded-2xl shadow-lg shadow-amber-950/60 transition-all flex items-center justify-center gap-2">
+                <i data-lucide="send" class="w-4 h-4"></i>
+                <span>إرسال الطلب للورشة فوراً</span>
+              </button>
             </div>
 
-            <div>
-              <label class="block text-[11px] font-bold text-amber-200/70 mb-1">اسم الزبون / جهة التوصيل (اختياري)</label>
-              <input type="text" id="orderCustomer" placeholder="زبون مباشر، كافيه النجمة، توصيل..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-amber-500">
-            </div>
-
-            <div>
-              <label class="block text-[11px] font-bold text-amber-200/70 mb-1">ملاحظات الطحن أو التجهيز</label>
-              <input type="text" id="orderNotes" placeholder="ناعمة جداً، ركوة، مع وش، كيس مضغوط..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-amber-500">
-            </div>
-
-            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 active:scale-95 text-white font-black text-sm rounded-2xl shadow-lg shadow-amber-950/60 transition-all flex items-center justify-center gap-2">
-              <i data-lucide="send" class="w-4 h-4"></i>
-              <span>إرسال الطلب للورشة فوراً</span>
-            </button>
           </form>
         </div>
       </section>
@@ -474,7 +495,7 @@
     <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- ==================== JavaScript مع الربط السحابي الحقيقي ==================== -->
+  <!-- ==================== JavaScript ==================== -->
   <script>
     // -------------------------------------------------------------------
     // 1. إعدادات Firebase الحقيقية لمشروع tarek-coffee
@@ -772,14 +793,15 @@
     }
 
     // -------------------------------------------------------------------
-    // 7. الأصناف والأوزان
+    // 7. الأصناف والأوزان (مع الإخفاء الفوري لتسهيل الاستخدام)
     // -------------------------------------------------------------------
     function selectCoffeeItem(itemName, category) {
       newOrderState.item = itemName;
       newOrderState.category = category;
 
+      // تحديد الزر بدقة عبر data-item
       document.querySelectorAll('.item-card').forEach(card => {
-        if (card.textContent.includes(itemName)) {
+        if (card.getAttribute('data-item') === itemName) {
           card.classList.remove('border-amber-900/40', 'bg-[#1d140f]', 'text-stone-300');
           card.classList.add('border-amber-600', 'bg-amber-950/60', 'text-amber-200');
         } else {
@@ -787,6 +809,11 @@
           card.classList.add('border-amber-900/40', 'bg-[#1d140f]', 'text-stone-300');
         }
       });
+
+      // إخفاء شبكة الأصناف وإظهار شريط الصنف المختار
+      document.getElementById('itemsSelectionSection').classList.add('hidden');
+      document.getElementById('selectedItemBanner').classList.remove('hidden');
+      document.getElementById('selectedItemNameText').textContent = itemName;
 
       const weightWrapper = document.getElementById('weightSectionWrapper');
       const zablaniNotice = document.getElementById('zablaniNotice');
@@ -828,6 +855,12 @@
         document.getElementById('weightBtn-وقية').classList.remove('hidden');
         setWeight('كيلو');
       }
+      lucide.createIcons();
+    }
+
+    function showAllItemsGrid() {
+      document.getElementById('itemsSelectionSection').classList.remove('hidden');
+      document.getElementById('selectedItemBanner').classList.add('hidden');
       lucide.createIcons();
     }
 
@@ -901,6 +934,7 @@
       document.getElementById('orderNotes').value = '';
       document.getElementById('customWeightVal').value = '';
 
+      showAllItemsGrid();
       switchTab('orders');
     }
 
