@@ -131,17 +131,14 @@
         </div>
 
         <div class="flex items-center gap-2">
-          <!-- زر تفعيل الإشعارات والتنبيهات للسامسونج -->
           <button id="btnRequestNotification" onclick="requestNotificationPermission()" class="w-9 h-9 rounded-xl bg-[#231711] hover:bg-[#301f17] text-amber-300 border border-amber-900/40 flex items-center justify-center transition-colors" title="إذن الإشعارات">
             <i data-lucide="bell" class="w-4 h-4"></i>
           </button>
           
-          <!-- إعدادات وتغيير كلمة السر (يظهر حصرياً للـ Boss فقط) -->
           <button id="bossSettingsBtn" onclick="openSettingsModal()" class="w-9 h-9 rounded-xl bg-[#231711] hover:bg-[#301f17] text-amber-300 border border-amber-900/40 flex items-center justify-center transition-colors" title="إعدادات الأمان">
             <i data-lucide="settings" class="w-4 h-4"></i>
           </button>
 
-          <!-- تسجيل الخروج -->
           <button onclick="logout()" class="w-9 h-9 rounded-xl bg-[#231711] hover:bg-rose-950 text-stone-300 hover:text-rose-400 border border-amber-900/40 flex items-center justify-center transition-colors">
             <i data-lucide="log-out" class="w-4 h-4"></i>
           </button>
@@ -149,13 +146,11 @@
       </div>
     </header>
 
-    <!-- المحتوى القابل للتغيير عبر التبويبات -->
     <main class="max-w-md mx-auto p-4">
       
       <!-- ==================== تبويب الطلبات (Boss & Worker) ==================== -->
       <section id="ordersTabSection">
         
-        <!-- بطاقة حالة وتتبع آخر ظهور للعامل (تظهر للبوس فقط) -->
         <div id="workerPresenceCard" class="mb-4 bg-[#160f0b] border border-amber-900/40 p-3.5 rounded-2xl shadow-md flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="relative">
@@ -174,7 +169,6 @@
           </button>
         </div>
 
-        <!-- أزرار فلترة الطلبات السريعة -->
         <div class="flex gap-1.5 overflow-x-auto custom-scrollbar pb-2 mb-3 text-xs font-bold">
           <button onclick="filterOrders('all')" id="filterBtn-all" class="px-3.5 py-2 rounded-xl bg-amber-700 text-white shadow-sm whitespace-nowrap">الكل (<span id="count-all">0</span>)</button>
           <button onclick="filterOrders('pending')" id="filterBtn-pending" class="px-3.5 py-2 rounded-xl bg-[#1b120d] text-amber-200/70 border border-amber-900/40 whitespace-nowrap">قيد المتابعة (<span id="count-pending">0</span>)</button>
@@ -186,7 +180,6 @@
         <!-- قائمة كروت الطلبات -->
         <div id="ordersList" class="space-y-3"></div>
 
-        <!-- رسالة عند عدم وجود طلبات -->
         <div id="noOrdersState" class="hidden text-center py-14">
           <div class="w-16 h-16 mx-auto mb-3 bg-[#1b120d] border border-amber-900/30 rounded-2xl flex items-center justify-center text-amber-400/40">
             <i data-lucide="inbox" class="w-8 h-8"></i>
@@ -211,7 +204,6 @@
 
           <form id="orderForm" onsubmit="handleCreateOrder(event)" class="space-y-4">
             
-            <!-- الصنف المختار بعد الإخفاء -->
             <div id="selectedItemBanner" class="hidden p-3.5 bg-gradient-to-r from-amber-950/80 to-[#221711] border border-amber-600/50 rounded-2xl flex items-center justify-between">
               <div class="flex items-center gap-2.5">
                 <div class="w-8 h-8 rounded-xl bg-amber-600/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
@@ -228,7 +220,6 @@
               </button>
             </div>
 
-            <!-- شبكة اختيار الأصناف -->
             <div id="itemsSelectionSection">
               <label class="block text-xs font-extrabold text-amber-200/80 mb-2">اختر الصنف :</label>
               <div class="grid grid-cols-2 gap-2 text-xs font-bold" id="itemSelectionGrid">
@@ -253,7 +244,6 @@
                   <span>غامقة هيل اكسترا</span>
                 </button>
 
-                <!-- كيس زبلطاني (كيلين حصراً) -->
                 <button type="button" data-item="كيس زبلطاني" onclick="selectCoffeeItem('كيس زبلطاني', 'special_2kg')" class="item-card col-span-2 p-3.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-amber-100 hover:border-amber-500 flex items-center justify-between px-4 transition-all">
                   <div class="flex items-center gap-2">
                     <i data-lucide="package" class="w-5 h-5 text-amber-400"></i>
@@ -262,7 +252,6 @@
                   <span class="text-[11px] bg-amber-600 text-white font-black px-2.5 py-1 rounded-lg">كيلين حصراً (2 كغ)</span>
                 </button>
 
-                <!-- أصناف 3in1، كابتشينو، هوت شوكلت -->
                 <div class="col-span-2 pt-2 border-t border-amber-900/30">
                   <p class="text-[11px] font-bold text-amber-200/50 mb-2">المشروبات الإضافية (كيلو / نصف كيلو / مخصص):</p>
                 </div>
@@ -279,7 +268,6 @@
                   <span>هوت شوكلت</span>
                 </button>
 
-                <!-- أصناف النوع الثاني (مخصص حصراً) -->
                 <div class="col-span-2 pt-2 border-t border-amber-900/30">
                   <p class="text-[11px] font-bold text-amber-200/50 mb-2">أصناف النوع الثاني (وزن مخصص حصراً):</p>
                 </div>
@@ -295,9 +283,7 @@
               </div>
             </div>
 
-            <!-- تفاصيل الطلب التي تبقى ظاهرة بعد اختيار الصنف -->
             <div id="orderDetailsSection">
-              <!-- 2. خيارات الأوزان -->
               <div id="weightSectionWrapper">
                 <label class="block text-xs font-extrabold text-amber-200/80 mb-2">تحديد الوزن :</label>
                 <div id="standardWeightsGrid" class="grid grid-cols-2 gap-2 text-xs font-bold">
@@ -319,13 +305,11 @@
                 </div>
               </div>
 
-              <!-- إشعار وزن الزبلطاني الثابت -->
               <div id="zablaniNotice" class="hidden p-3 bg-amber-950/60 border border-amber-700/60 rounded-2xl text-xs font-bold text-amber-200 flex items-center gap-2">
                 <i data-lucide="check-circle-2" class="w-4 h-4 text-amber-400"></i>
                 <span>الوزن مقفل تلقائياً: 2 كغ (كيلين)</span>
               </div>
 
-              <!-- تفاصيل إضافية -->
               <div class="grid grid-cols-2 gap-3 pt-3">
                 <div>
                   <label class="block text-[11px] font-bold text-amber-200/70 mb-1">الكمية (أكياس)</label>
@@ -357,7 +341,7 @@
         </div>
       </section>
 
-      <!-- ==================== تبويب الإدارة المالية والتقارير (Boss فقط) ==================== -->
+      <!-- ==================== تبويب الإدارة المالية والتقارير ==================== -->
       <section id="financeTabSection" class="hidden space-y-4">
         
         <div class="grid grid-cols-2 gap-3">
@@ -374,7 +358,6 @@
           </div>
         </div>
 
-        <!-- الخط البياني التفاعلي -->
         <div class="bg-[#160f0b] p-4 rounded-3xl shadow-md border border-amber-900/40">
           <div class="flex items-center justify-between mb-3 pb-2 border-b border-amber-900/30">
             <div>
@@ -395,7 +378,6 @@
           </div>
         </div>
 
-        <!-- إدراج الغلّة الأسبوعية للمحل -->
         <div class="bg-[#160f0b] p-4 rounded-3xl shadow-md border border-amber-900/40">
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-2">
@@ -445,7 +427,6 @@
 
     </main>
 
-    <!-- شريط التنقل السفلي للموبايل (Bottom Navigation) -->
     <nav class="fixed bottom-0 inset-x-0 z-40 bg-[#160f0b]/95 backdrop-blur-md border-t border-amber-900/40 text-stone-400 px-4 py-2">
       <div class="max-w-md mx-auto flex items-center justify-around">
         <button onclick="switchTab('orders')" id="tabBtn-orders" class="nav-tab-btn flex flex-col items-center gap-1 py-1 px-3 rounded-xl text-amber-500 font-bold">
@@ -467,7 +448,6 @@
 
   </div>
 
-  <!-- Modal تغيير كلمات السر (متاح حصراً للـ Boss لتعديل الحسابين) -->
   <div id="settingsModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-[#18100c] rounded-3xl p-5 w-full max-w-sm shadow-2xl border border-amber-800/60">
       <div class="flex items-center justify-between pb-3 border-b border-amber-900/30 mb-4">
@@ -498,16 +478,12 @@
     </div>
   </div>
 
-  <!-- صوت إشعار الطلبات -->
   <audio id="audioNotification" preload="auto">
     <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
   </audio>
 
   <!-- ==================== JavaScript ==================== -->
   <script>
-    // -------------------------------------------------------------------
-    // 1. إعدادات Firebase الحقيقية لمشروع tarek-coffee
-    // -------------------------------------------------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyCIfvAfNdZ9ovjUC8qExL5vDVTIdW1m0qA",
       authDomain: "tarek-coffee-52f94.firebaseapp.com",
@@ -560,9 +536,6 @@
       weight: 'كيلو'
     };
 
-    // -------------------------------------------------------------------
-    // 2. عند فتح التطبيق
-    // -------------------------------------------------------------------
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
       initSecurity();
@@ -586,7 +559,6 @@
       setInterval(renderWorkerPresence, 15000);
     });
 
-    // جلب أو تهيئة كلمات السر سحابياً
     function initSecurity() {
       if (!localStorage.getItem(STORAGE_KEYS.PASS_BOSS)) {
         localStorage.setItem(STORAGE_KEYS.PASS_BOSS, '1234');
@@ -602,7 +574,6 @@
             if (data.boss) localStorage.setItem(STORAGE_KEYS.PASS_BOSS, data.boss);
             if (data.worker) localStorage.setItem(STORAGE_KEYS.PASS_WORKER, data.worker);
           } else {
-            // حفظ الافتراضية بالسحابة لأول مرة
             db.collection("system").doc("passwords").set({
               boss: '1234',
               worker: '0000'
@@ -622,9 +593,6 @@
       }
     }
 
-    // -------------------------------------------------------------------
-    // 3. الاستماع اللحظي للسحابة (Real-time Listener)
-    // -------------------------------------------------------------------
     function initCloudSync() {
       if (!isCloud || !db) {
         ordersCache = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS_LOCAL) || '[]');
@@ -640,12 +608,14 @@
           list.push({ id: doc.id, ...doc.data() });
         });
 
-        // تشغيل إشعار واهتزاز في حال وصول طلب جديد
-        if (previousOrdersCount > 0 && list.length > previousOrdersCount) {
-          const newest = list[0];
+        // نعزل الطلبات المحذوفة وهمياً (Soft Deleted) حتى لا تطلق إشعار
+        const activeList = list.filter(o => !o.deletedUI);
+
+        if (previousOrdersCount > 0 && activeList.length > previousOrdersCount) {
+          const newest = activeList[0];
           triggerNativePushNotification(`طلب قهوة جديد: ${newest.item}`, `الوزن: ${newest.weight} - الكمية: ${newest.qty} (${newest.customer})`);
         }
-        previousOrdersCount = list.length;
+        previousOrdersCount = activeList.length;
 
         ordersCache = list;
         localStorage.setItem(STORAGE_KEYS.ORDERS_LOCAL, JSON.stringify(list));
@@ -676,9 +646,6 @@
       });
     }
 
-    // -------------------------------------------------------------------
-    // 4. نظام تسجيل الدخول والصلاحيات
-    // -------------------------------------------------------------------
     function selectRole(role) {
       selectedLoginRole = role;
       const bBtn = document.getElementById('selectBossBtn');
@@ -706,7 +673,7 @@
         document.getElementById('loginPassInput').value = '';
         err.classList.add('hidden');
         grantAccess(selectedLoginRole);
-        requestNotificationPermission(); // طلب إذن الإشعارات فور الدخول للسامسونج
+        requestNotificationPermission();
       } else {
         err.classList.remove('hidden');
       }
@@ -726,12 +693,12 @@
         badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>لوحة الـ Boss طارق</span>`;
         bossFeatures.forEach(el => el.classList.remove('hidden'));
         presenceCard.classList.remove('hidden');
-        if (bossSettingsBtn) bossSettingsBtn.classList.remove('hidden'); // يظهر للبوس
+        if (bossSettingsBtn) bossSettingsBtn.classList.remove('hidden');
       } else {
         badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span><span>واجهة الورشة والتحضير</span>`;
         bossFeatures.forEach(el => el.classList.add('hidden'));
         presenceCard.classList.add('hidden');
-        if (bossSettingsBtn) bossSettingsBtn.classList.add('hidden'); // يختفي تماماً عن العامل
+        if (bossSettingsBtn) bossSettingsBtn.classList.add('hidden');
         triggerWorkerPulse();
       }
 
@@ -750,9 +717,6 @@
       lucide.createIcons();
     }
 
-    // -------------------------------------------------------------------
-    // 5. تتبع العامل (Presence)
-    // -------------------------------------------------------------------
     function triggerWorkerPulse() {
       if (currentUserRole !== 'worker') return;
       const now = Date.now();
@@ -800,9 +764,6 @@
       }
     }
 
-    // -------------------------------------------------------------------
-    // 6. التبديل بين التبويبات
-    // -------------------------------------------------------------------
     function switchTab(tabId) {
       activeTab = tabId;
       document.getElementById('ordersTabSection').classList.add('hidden');
@@ -830,9 +791,6 @@
       lucide.createIcons();
     }
 
-    // -------------------------------------------------------------------
-    // 7. الأصناف والأوزان (إخفاء باقي الأصناف وتحديد الصنف بدقة)
-    // -------------------------------------------------------------------
     function selectCoffeeItem(itemName, category) {
       newOrderState.item = itemName;
       newOrderState.category = category;
@@ -923,9 +881,6 @@
       }
     }
 
-    // -------------------------------------------------------------------
-    // 8. إنشاء وحفظ الطلبات السحابية
-    // -------------------------------------------------------------------
     function handleCreateOrder(e) {
       e.preventDefault();
       let chosenWeight = newOrderState.weight;
@@ -948,6 +903,7 @@
         customer: document.getElementById('orderCustomer').value.trim() || 'زبون مباشر',
         notes: document.getElementById('orderNotes').value.trim(),
         status: 'pending',
+        deletedUI: false,
         createdAt: Date.now()
       };
 
@@ -999,24 +955,41 @@
       }
     }
 
+    // دالة الحذف الذكي (إخفاء للطلبات المكتملة، وحذف نهائي للطلبات غير المكتملة)
     function deleteOrder(orderDocId) {
       if (currentUserRole !== 'boss') return;
-      if (!confirm('هل أنت متأكد من حذف هذا الطلب نهائياً؟')) return;
+      
+      const orderToDel = ordersCache.find(o => o.id === orderDocId);
+      if(!orderToDel) return;
 
-      if (isCloud && db) {
-        db.collection("orders").doc(orderDocId).delete()
-          .catch(err => alert("خطأ بالحذف: " + err.message));
+      if (orderToDel.status === 'completed') {
+          if (!confirm('هذا الطلب مكتمل وتم تسليمه. هل تريد إخفاءه من شاشة الطلبات فقط؟ (ملاحظة: سيبقى محفوظاً ومحسوباً في السجلات المالية)')) return;
+          
+          if (isCloud && db) {
+            db.collection("orders").doc(orderDocId).update({
+                deletedUI: true,
+                updatedAt: Date.now()
+            }).catch(err => alert("خطأ في عملية الإخفاء: " + err.message));
+          } else {
+            orderToDel.deletedUI = true;
+            localStorage.setItem(STORAGE_KEYS.ORDERS_LOCAL, JSON.stringify(ordersCache));
+            loadOrders();
+          }
       } else {
-        ordersCache = ordersCache.filter(o => o.id !== orderDocId);
-        localStorage.setItem(STORAGE_KEYS.ORDERS_LOCAL, JSON.stringify(ordersCache));
-        loadOrders();
-        updateFinancialDashboard();
+          if (!confirm('هذا الطلب لم يكتمل بعد. هل أنت متأكد من حذفه نهائياً وإلغائه؟')) return;
+
+          if (isCloud && db) {
+            db.collection("orders").doc(orderDocId).delete()
+              .catch(err => alert("خطأ بالحذف النهائي: " + err.message));
+          } else {
+            ordersCache = ordersCache.filter(o => o.id !== orderDocId);
+            localStorage.setItem(STORAGE_KEYS.ORDERS_LOCAL, JSON.stringify(ordersCache));
+            loadOrders();
+            updateFinancialDashboard();
+          }
       }
     }
 
-    // -------------------------------------------------------------------
-    // 9. عرض وتصفية الطلبات
-    // -------------------------------------------------------------------
     function filterOrders(status) {
       currentFilter = status;
       ['all', 'pending', 'preparing', 'ready', 'completed'].forEach(s => {
@@ -1030,22 +1003,37 @@
       loadOrders();
     }
 
+    // دالة مساعدة للحصول على صيغة الواتساب لتاريخ اليوم (اليوم، البارحة، التاريخ)
+    function getDateLabel(timestamp) {
+      if (!timestamp) return 'اليوم';
+      const date = new Date(timestamp);
+      const today = new Date();
+      const yesterday = new Date();
+      yesterday.setDate(today.getDate() - 1);
+
+      if (date.toDateString() === today.toDateString()) return 'اليوم';
+      if (date.toDateString() === yesterday.toDateString()) return 'البارحة';
+      
+      return date.toLocaleDateString('ar-SY', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
     function loadOrders() {
-      const orders = ordersCache;
+      // إهمال الطلبات المخفية (Soft Deleted) من الشاشة
+      const activeOrders = ordersCache.filter(o => !o.deletedUI);
       
       const countAll = document.getElementById('count-all');
       if (countAll) {
-        countAll.textContent = orders.length;
-        document.getElementById('count-pending').textContent = orders.filter(o => o.status === 'pending').length;
-        document.getElementById('count-preparing').textContent = orders.filter(o => o.status === 'preparing').length;
-        document.getElementById('count-ready').textContent = orders.filter(o => o.status === 'ready').length;
-        document.getElementById('count-completed').textContent = orders.filter(o => o.status === 'completed').length;
+        countAll.textContent = activeOrders.length;
+        document.getElementById('count-pending').textContent = activeOrders.filter(o => o.status === 'pending').length;
+        document.getElementById('count-preparing').textContent = activeOrders.filter(o => o.status === 'preparing').length;
+        document.getElementById('count-ready').textContent = activeOrders.filter(o => o.status === 'ready').length;
+        document.getElementById('count-completed').textContent = activeOrders.filter(o => o.status === 'completed').length;
       }
 
       const container = document.getElementById('ordersList');
       const emptyState = document.getElementById('noOrdersState');
 
-      const filtered = orders.filter(o => currentFilter === 'all' ? true : o.status === currentFilter);
+      const filtered = activeOrders.filter(o => currentFilter === 'all' ? true : o.status === currentFilter);
 
       if (!filtered || filtered.length === 0) {
         container.innerHTML = '';
@@ -1054,7 +1042,18 @@
       }
 
       emptyState.classList.add('hidden');
-      container.innerHTML = filtered.map(order => {
+      
+      let htmlContent = "";
+      let lastDateLabel = "";
+
+      filtered.forEach(order => {
+        // إضافة فاصل الأيام
+        const orderDateLabel = getDateLabel(order.createdAt);
+        if (orderDateLabel !== lastDateLabel) {
+            htmlContent += `<div class="w-full flex justify-center mt-6 mb-3"><span class="bg-[#241711] text-amber-200/50 text-[10px] font-bold px-4 py-1.5 rounded-full border border-amber-900/30">${orderDateLabel}</span></div>`;
+            lastDateLabel = orderDateLabel;
+        }
+
         const isWorker = currentUserRole === 'worker';
         const timeStr = new Date(order.createdAt).toLocaleTimeString('ar-SY', {hour: '2-digit', minute:'2-digit'});
 
@@ -1069,7 +1068,7 @@
           statusBadge = `<span class="bg-[#241711] text-stone-400 border border-stone-800 px-2 py-0.5 rounded-lg text-[10px] font-bold">مكتمل ✅</span>`;
         }
 
-        return `
+        htmlContent += `
           <div class="bg-[#170f0b] rounded-2xl p-4 shadow-md border border-amber-900/40 relative overflow-hidden">
             <div class="flex items-start justify-between mb-2">
               <div class="flex items-center gap-2">
@@ -1079,7 +1078,7 @@
               <div class="flex items-center gap-1.5">
                 ${statusBadge}
                 ${currentUserRole === 'boss' ? `
-                  <button onclick="deleteOrder('${order.id}')" class="text-amber-200/40 hover:text-rose-400 p-1">
+                  <button onclick="deleteOrder('${order.id}')" class="text-amber-200/40 hover:text-rose-400 p-1 transition-colors">
                     <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                   </button>
                 ` : ''}
@@ -1126,17 +1125,14 @@
                 <span class="text-[10px] text-amber-200/40 font-bold">تحديث الحالة من هاتف الباريستا</span>
               </div>
             `}
-
           </div>
         `;
-      }).join('');
-
+      });
+      
+      container.innerHTML = htmlContent;
       lucide.createIcons();
     }
 
-    // -------------------------------------------------------------------
-    // 10. الإدارة المالية والغلّة الأسبوعية
-    // -------------------------------------------------------------------
     function handleAddWeeklyGhallah(e) {
       e.preventDefault();
       const amount = parseFloat(document.getElementById('ghallahAmount').value) || 0;
@@ -1187,6 +1183,7 @@
       const orders = ordersCache;
       const ghallahList = ghallahCache;
 
+      // جمع المبالغ من كافة الطلبات المخزنة (بما فيها المخفية/Soft deleted)
       const ordersTotal = orders.reduce((sum, o) => sum + (o.price || 0), 0);
       const ghallahTotal = ghallahList.reduce((sum, g) => sum + (g.amount || 0), 0);
       const grandTotal = ordersTotal + ghallahTotal;
@@ -1313,9 +1310,6 @@
       });
     }
 
-    // -------------------------------------------------------------------
-    // 11. تصدير كشف الشهر إلى ملف Excel / CSV
-    // -------------------------------------------------------------------
     function exportMonthlyReportCSV() {
       const orders = ordersCache;
       if (orders.length === 0) {
@@ -1338,9 +1332,6 @@
       document.body.removeChild(link);
     }
 
-    // -------------------------------------------------------------------
-    // 12. إعدادات كلمات السر السحابية (حصراً للـ Boss)
-    // -------------------------------------------------------------------
     function openSettingsModal() {
       if (currentUserRole !== 'boss') {
         alert('صلاحية تعديل كلمات المرور محصورة بالـ Boss فقط!');
@@ -1387,9 +1378,6 @@
       }
     }
 
-    // -------------------------------------------------------------------
-    // 13. نظام إشعارات واهتزاز أجهزة Android (APK / Samsung)
-    // -------------------------------------------------------------------
     function requestNotificationPermission() {
       if (!("Notification" in window)) {
         console.warn("المتصفح أو بيئة الـ Webview لا تدعم الـ Notifications");
@@ -1410,12 +1398,10 @@
     function triggerNativePushNotification(title, body) {
       playBeep();
 
-      // اهتزاز هاتف السامسونج
       if ("vibrate" in navigator) {
         navigator.vibrate([200, 100, 200, 100, 300]);
       }
 
-      // إشعار شريط الحالة لنظام أندرويد
       if ("Notification" in window && Notification.permission === "granted") {
         try {
           new Notification(title, {
