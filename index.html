@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -45,10 +45,12 @@
     }
   </script>
   <style>
-    body {
+    html, body {
       font-family: 'Tajawal', sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      background-color: #0e0906 !important;
+      color: #f5ede4 !important;
     }
     input, textarea, select {
       user-select: text;
@@ -62,26 +64,26 @@
     }
   </style>
 </head>
-<body class="bg-stone-100 text-stone-800 min-h-screen pb-20 selection:bg-amber-800 selection:text-white">
+<body class="bg-[#0e0906] text-[#f5ede4] min-h-screen pb-20 selection:bg-amber-700 selection:text-white">
 
   <!-- ==================== 1. شاشة تسجيل الدخول ==================== -->
-  <div id="loginScreen" class="fixed inset-0 z-50 bg-stone-900 flex flex-col justify-center items-center p-6 text-white overflow-y-auto">
-    <div class="w-full max-w-sm bg-stone-800/90 border border-stone-700/60 p-6 rounded-3xl shadow-2xl backdrop-blur-md">
+  <div id="loginScreen" class="fixed inset-0 z-50 bg-[#0a0604] flex flex-col justify-center items-center p-6 text-white overflow-y-auto">
+    <div class="w-full max-w-sm bg-[#160f0b] border border-amber-900/40 p-6 rounded-3xl shadow-2xl backdrop-blur-md">
       <div class="text-center mb-6">
-        <div class="w-16 h-16 mx-auto mb-3 bg-gradient-to-tr from-amber-700 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-900/40">
+        <div class="w-16 h-16 mx-auto mb-3 bg-gradient-to-tr from-amber-700 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-950/60">
           <i data-lucide="coffee" class="w-9 h-9 text-white"></i>
         </div>
         <h1 class="text-2xl font-black text-amber-100">بُــنّ طــارق</h1>
-        <p class="text-xs text-stone-400 mt-1">نظام إدارة الورشة والطلبات السحابي</p>
+        <p class="text-xs text-amber-200/60 mt-1">نظام إدارة الورشة والطلبات السحابي</p>
       </div>
 
       <!-- اختيار الحساب -->
-      <div class="flex bg-stone-950/60 p-1 rounded-2xl mb-6 border border-stone-800">
+      <div class="flex bg-[#0d0705] p-1 rounded-2xl mb-6 border border-amber-900/30">
         <button id="selectBossBtn" onclick="selectRole('boss')" class="flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all duration-200 bg-amber-600 text-white shadow-md flex items-center justify-center gap-2">
           <i data-lucide="shield" class="w-4 h-4"></i>
           الـ Boss
         </button>
-        <button id="selectWorkerBtn" onclick="selectRole('worker')" class="flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all duration-200 text-stone-400 hover:text-white flex items-center justify-center gap-2">
+        <button id="selectWorkerBtn" onclick="selectRole('worker')" class="flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all duration-200 text-amber-200/50 hover:text-white flex items-center justify-center gap-2">
           <i data-lucide="user-check" class="w-4 h-4"></i>
           العامل
         </button>
@@ -89,9 +91,9 @@
 
       <div class="space-y-4">
         <div>
-          <label class="block text-xs font-bold text-stone-300 mb-2">كلمة المرور</label>
+          <label class="block text-xs font-bold text-amber-200/80 mb-2">كلمة المرور</label>
           <div class="relative">
-            <input type="password" id="loginPassInput" placeholder="أدخل كلمة المرور..." class="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-white text-center tracking-widest text-lg focus:outline-none focus:border-amber-500 transition-all">
+            <input type="password" id="loginPassInput" placeholder="أدخل كلمة المرور..." class="w-full bg-[#0d0705] border border-amber-900/50 rounded-xl px-4 py-3 text-white text-center tracking-widest text-lg focus:outline-none focus:border-amber-500 transition-all">
           </div>
           <p id="loginError" class="text-xs text-rose-400 mt-2 text-center hidden flex items-center justify-center gap-1">
             <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
@@ -99,7 +101,7 @@
           </p>
         </div>
 
-        <button onclick="performLogin()" class="w-full py-3.5 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 active:scale-95 text-white font-bold rounded-xl shadow-lg shadow-amber-900/40 transition-all flex items-center justify-center gap-2 text-base">
+        <button onclick="performLogin()" class="w-full py-3.5 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 active:scale-95 text-white font-bold rounded-xl shadow-lg shadow-amber-950/60 transition-all flex items-center justify-center gap-2 text-base">
           <span>دخول للنظام</span>
           <i data-lucide="log-in" class="w-5 h-5"></i>
         </button>
@@ -110,10 +112,10 @@
   <!-- ==================== 2. الواجهة الرئيسية والتنقل ==================== -->
   <div id="mainApp" class="hidden">
     <!-- الرأس Header -->
-    <header class="sticky top-0 z-40 bg-stone-900 text-white px-4 py-3 shadow-md border-b border-stone-800">
+    <header class="sticky top-0 z-40 bg-[#160f0b]/95 backdrop-blur-md text-white px-4 py-3 shadow-xl border-b border-amber-900/40">
       <div class="max-w-md mx-auto flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-amber-600 flex items-center justify-center shadow-md">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-700 to-amber-500 flex items-center justify-center shadow-md">
             <i data-lucide="coffee" class="w-5 h-5 text-white"></i>
           </div>
           <div>
@@ -130,11 +132,11 @@
 
         <div class="flex items-center gap-2">
           <!-- إعدادات وتغيير كلمة السر -->
-          <button onclick="openSettingsModal()" class="w-9 h-9 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 flex items-center justify-center transition-colors">
+          <button onclick="openSettingsModal()" class="w-9 h-9 rounded-xl bg-[#231711] hover:bg-[#301f17] text-amber-300 border border-amber-900/40 flex items-center justify-center transition-colors">
             <i data-lucide="settings" class="w-4 h-4"></i>
           </button>
           <!-- تسجيل الخروج -->
-          <button onclick="logout()" class="w-9 h-9 rounded-xl bg-stone-800 hover:bg-rose-900/50 text-stone-300 hover:text-rose-400 flex items-center justify-center transition-colors">
+          <button onclick="logout()" class="w-9 h-9 rounded-xl bg-[#231711] hover:bg-rose-950 text-stone-300 hover:text-rose-400 border border-amber-900/40 flex items-center justify-center transition-colors">
             <i data-lucide="log-out" class="w-4 h-4"></i>
           </button>
         </div>
@@ -148,31 +150,31 @@
       <section id="ordersTabSection">
         
         <!-- بطاقة حالة وتتبع آخر ظهور للعامل (تظهر للبوس فقط) -->
-        <div id="workerPresenceCard" class="mb-4 bg-white border border-stone-200/80 p-3.5 rounded-2xl shadow-sm flex items-center justify-between">
+        <div id="workerPresenceCard" class="mb-4 bg-[#160f0b] border border-amber-900/40 p-3.5 rounded-2xl shadow-md flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="relative">
-              <div class="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-stone-700 font-bold">
+              <div class="w-10 h-10 rounded-xl bg-[#231711] border border-amber-800/40 flex items-center justify-center text-amber-400 font-bold">
                 <i data-lucide="user" class="w-5 h-5"></i>
               </div>
-              <span id="workerStatusIndicator" class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-stone-400 border-2 border-white"></span>
+              <span id="workerStatusIndicator" class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-stone-500 border-2 border-[#160f0b]"></span>
             </div>
             <div>
-              <p class="text-xs text-stone-500 font-semibold">باريستا الورشة (العامل)</p>
-              <p id="workerLastSeenText" class="text-xs font-bold text-stone-800 mt-0.5">جاري التحقق من السحابة...</p>
+              <p class="text-xs text-amber-200/60 font-semibold">باريستا الورشة (العامل)</p>
+              <p id="workerLastSeenText" class="text-xs font-bold text-amber-100 mt-0.5">جاري التحقق من السحابة...</p>
             </div>
           </div>
-          <button onclick="renderWorkerPresence()" class="p-2 text-stone-400 hover:text-stone-700 rounded-lg hover:bg-stone-50">
+          <button onclick="renderWorkerPresence()" class="p-2 text-amber-300 hover:text-white rounded-lg hover:bg-[#231711]">
             <i data-lucide="refresh-cw" class="w-4 h-4"></i>
           </button>
         </div>
 
         <!-- أزرار فلترة الطلبات السريعة -->
         <div class="flex gap-1.5 overflow-x-auto custom-scrollbar pb-2 mb-3 text-xs font-bold">
-          <button onclick="filterOrders('all')" id="filterBtn-all" class="px-3.5 py-2 rounded-xl bg-stone-800 text-white shadow-sm whitespace-nowrap">الكل (<span id="count-all">0</span>)</button>
-          <button onclick="filterOrders('pending')" id="filterBtn-pending" class="px-3.5 py-2 rounded-xl bg-white text-stone-600 border border-stone-200 whitespace-nowrap">قيد المتابعة (<span id="count-pending">0</span>)</button>
-          <button onclick="filterOrders('preparing')" id="filterBtn-preparing" class="px-3.5 py-2 rounded-xl bg-white text-stone-600 border border-stone-200 whitespace-nowrap">جاري التحضير (<span id="count-preparing">0</span>)</button>
-          <button onclick="filterOrders('ready')" id="filterBtn-ready" class="px-3.5 py-2 rounded-xl bg-white text-stone-600 border border-stone-200 whitespace-nowrap">جاهز (<span id="count-ready">0</span>)</button>
-          <button onclick="filterOrders('completed')" id="filterBtn-completed" class="px-3.5 py-2 rounded-xl bg-white text-stone-600 border border-stone-200 whitespace-nowrap">مكتمل (<span id="count-completed">0</span>)</button>
+          <button onclick="filterOrders('all')" id="filterBtn-all" class="px-3.5 py-2 rounded-xl bg-amber-700 text-white shadow-sm whitespace-nowrap">الكل (<span id="count-all">0</span>)</button>
+          <button onclick="filterOrders('pending')" id="filterBtn-pending" class="px-3.5 py-2 rounded-xl bg-[#1b120d] text-amber-200/70 border border-amber-900/40 whitespace-nowrap">قيد المتابعة (<span id="count-pending">0</span>)</button>
+          <button onclick="filterOrders('preparing')" id="filterBtn-preparing" class="px-3.5 py-2 rounded-xl bg-[#1b120d] text-amber-200/70 border border-amber-900/40 whitespace-nowrap">جاري التحضير (<span id="count-preparing">0</span>)</button>
+          <button onclick="filterOrders('ready')" id="filterBtn-ready" class="px-3.5 py-2 rounded-xl bg-[#1b120d] text-amber-200/70 border border-amber-900/40 whitespace-nowrap">جاهز (<span id="count-ready">0</span>)</button>
+          <button onclick="filterOrders('completed')" id="filterBtn-completed" class="px-3.5 py-2 rounded-xl bg-[#1b120d] text-amber-200/70 border border-amber-900/40 whitespace-nowrap">مكتمل (<span id="count-completed">0</span>)</button>
         </div>
 
         <!-- قائمة كروت الطلبات -->
@@ -180,24 +182,24 @@
 
         <!-- رسالة عند عدم وجود طلبات -->
         <div id="noOrdersState" class="hidden text-center py-14">
-          <div class="w-16 h-16 mx-auto mb-3 bg-stone-200/60 rounded-2xl flex items-center justify-center text-stone-400">
+          <div class="w-16 h-16 mx-auto mb-3 bg-[#1b120d] border border-amber-900/30 rounded-2xl flex items-center justify-center text-amber-400/40">
             <i data-lucide="inbox" class="w-8 h-8"></i>
           </div>
-          <h3 class="text-sm font-bold text-stone-700">لا توجد طلبات حالياً</h3>
-          <p class="text-xs text-stone-500 mt-1">الطلبات الجديدة ستظهر فور إضافتها في السحابة</p>
+          <h3 class="text-sm font-bold text-amber-200">لا توجد طلبات حالياً</h3>
+          <p class="text-xs text-amber-200/50 mt-1">الطلبات الجديدة ستظهر فور إضافتها في السحابة</p>
         </div>
       </section>
 
       <!-- ==================== تبويب إنشاء طلب جديد (Boss فقط) ==================== -->
       <section id="newOrderTabSection" class="hidden">
-        <div class="bg-white rounded-3xl p-5 shadow-sm border border-stone-200/80 mb-6">
-          <div class="flex items-center gap-2 mb-4 pb-3 border-b border-stone-100">
-            <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
+        <div class="bg-[#160f0b] rounded-3xl p-5 shadow-xl border border-amber-900/40 mb-6">
+          <div class="flex items-center gap-2 mb-4 pb-3 border-b border-amber-900/30">
+            <div class="w-8 h-8 rounded-lg bg-amber-950/80 text-amber-400 flex items-center justify-center border border-amber-800/40">
               <i data-lucide="plus-circle" class="w-5 h-5"></i>
             </div>
             <div>
-              <h2 class="text-base font-extrabold text-stone-800">إضافة طلب قهوة جديد</h2>
-              <p class="text-[11px] text-stone-500">اختر الصنف والوزن ليتم إرساله للورشة سحابياً</p>
+              <h2 class="text-base font-extrabold text-amber-100">إضافة طلب قهوة جديد</h2>
+              <p class="text-[11px] text-amber-200/60">اختر الصنف والوزن ليتم إرساله للورشة سحابياً</p>
             </div>
           </div>
 
@@ -205,66 +207,66 @@
             
             <!-- 1. اختيار الصنف -->
             <div>
-              <label class="block text-xs font-extrabold text-stone-700 mb-2">اختر الصنف :</label>
+              <label class="block text-xs font-extrabold text-amber-200/80 mb-2">اختر الصنف :</label>
               <div class="grid grid-cols-2 gap-2 text-xs font-bold" id="itemSelectionGrid">
-                <button type="button" onclick="selectCoffeeItem('سوبر', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-600 bg-amber-50 text-amber-900 flex flex-col items-center text-center gap-1 transition-all">
-                  <i data-lucide="coffee" class="w-4 h-4 text-amber-700"></i>
+                <button type="button" onclick="selectCoffeeItem('سوبر', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-600 bg-amber-950/60 text-amber-200 flex flex-col items-center text-center gap-1 transition-all">
+                  <i data-lucide="coffee" class="w-4 h-4 text-amber-400"></i>
                   <span>سوبر</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('وسط', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex flex-col items-center text-center gap-1 transition-all">
-                  <i data-lucide="coffee" class="w-4 h-4"></i>
+                <button type="button" onclick="selectCoffeeItem('وسط', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
+                  <i data-lucide="coffee" class="w-4 h-4 text-amber-400"></i>
                   <span>وسط</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('بلا هيل', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex flex-col items-center text-center gap-1 transition-all">
-                  <i data-lucide="coffee" class="w-4 h-4"></i>
+                <button type="button" onclick="selectCoffeeItem('بلا هيل', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
+                  <i data-lucide="coffee" class="w-4 h-4 text-amber-400"></i>
                   <span>بلا هيل</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('موكا بلا هيل', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex flex-col items-center text-center gap-1 transition-all">
-                  <i data-lucide="coffee" class="w-4 h-4"></i>
+                <button type="button" onclick="selectCoffeeItem('موكا بلا هيل', 'coffee')" class="item-card p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
+                  <i data-lucide="coffee" class="w-4 h-4 text-amber-400"></i>
                   <span>موكا بلا هيل</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('غامقة هيل اكسترا', 'coffee')" class="item-card col-span-2 p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex items-center justify-center gap-2 transition-all">
-                  <i data-lucide="flame" class="w-4 h-4 text-amber-800"></i>
+                <button type="button" onclick="selectCoffeeItem('غامقة هيل اكسترا', 'coffee')" class="item-card col-span-2 p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex items-center justify-center gap-2 transition-all">
+                  <i data-lucide="flame" class="w-4 h-4 text-amber-500"></i>
                   <span>غامقة هيل اكسترا</span>
                 </button>
 
                 <!-- كيس زبلطاني (كيلين حصراً) -->
-                <button type="button" onclick="selectCoffeeItem('كيس زبلطاني', 'special_2kg')" class="item-card col-span-2 p-3.5 rounded-2xl border-2 border-stone-200 bg-stone-50 text-stone-800 hover:border-amber-500 flex items-center justify-between px-4 transition-all">
+                <button type="button" onclick="selectCoffeeItem('كيس زبلطاني', 'special_2kg')" class="item-card col-span-2 p-3.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-amber-100 hover:border-amber-500 flex items-center justify-between px-4 transition-all">
                   <div class="flex items-center gap-2">
-                    <i data-lucide="package" class="w-5 h-5 text-amber-700"></i>
+                    <i data-lucide="package" class="w-5 h-5 text-amber-400"></i>
                     <span class="font-extrabold">كيس زبلطاني</span>
                   </div>
                   <span class="text-[11px] bg-amber-600 text-white font-black px-2.5 py-1 rounded-lg">كيلين حصراً (2 كغ)</span>
                 </button>
 
                 <!-- أصناف 3in1، كابتشينو، هوت شوكلت -->
-                <div class="col-span-2 pt-2 border-t border-stone-100">
-                  <p class="text-[11px] font-bold text-stone-400 mb-2">المشروبات الإضافية (كيلو / نصف كيلو / مخصص):</p>
+                <div class="col-span-2 pt-2 border-t border-amber-900/30">
+                  <p class="text-[11px] font-bold text-amber-200/50 mb-2">المشروبات الإضافية (كيلو / نصف كيلو / مخصص):</p>
                 </div>
-                <button type="button" onclick="selectCoffeeItem('3in1', 'instant_fixed')" class="item-card p-2.5 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex flex-col items-center text-center gap-1 transition-all">
-                  <i data-lucide="cup-soda" class="w-4 h-4 text-amber-600"></i>
+                <button type="button" onclick="selectCoffeeItem('3in1', 'instant_fixed')" class="item-card p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
+                  <i data-lucide="cup-soda" class="w-4 h-4 text-amber-400"></i>
                   <span>3in1</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('كابتشينو', 'instant_fixed')" class="item-card p-2.5 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex flex-col items-center text-center gap-1 transition-all">
-                  <i data-lucide="cup-soda" class="w-4 h-4 text-amber-600"></i>
+                <button type="button" onclick="selectCoffeeItem('كابتشينو', 'instant_fixed')" class="item-card p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex flex-col items-center text-center gap-1 transition-all">
+                  <i data-lucide="cup-soda" class="w-4 h-4 text-amber-400"></i>
                   <span>كابتشينو</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('هوت شوكلت', 'instant_fixed')" class="item-card col-span-2 p-2.5 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 flex items-center justify-center gap-2 transition-all">
-                  <i data-lucide="cup-soda" class="w-4 h-4 text-amber-800"></i>
+                <button type="button" onclick="selectCoffeeItem('هوت شوكلت', 'instant_fixed')" class="item-card col-span-2 p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 flex items-center justify-center gap-2 transition-all">
+                  <i data-lucide="cup-soda" class="w-4 h-4 text-amber-400"></i>
                   <span>هوت شوكلت</span>
                 </button>
 
                 <!-- أصناف النوع الثاني (مخصص حصراً) -->
-                <div class="col-span-2 pt-2 border-t border-stone-100">
-                  <p class="text-[11px] font-bold text-stone-400 mb-2">أصناف النوع الثاني (وزن مخصص حصراً):</p>
+                <div class="col-span-2 pt-2 border-t border-amber-900/30">
+                  <p class="text-[11px] font-bold text-amber-200/50 mb-2">أصناف النوع الثاني (وزن مخصص حصراً):</p>
                 </div>
-                <button type="button" onclick="selectCoffeeItem('3in1 نوع ثاني', 'custom_only')" class="item-card p-2.5 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 text-center transition-all">
+                <button type="button" onclick="selectCoffeeItem('3in1 نوع ثاني', 'custom_only')" class="item-card p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 text-center transition-all">
                   <span>3in1 نوع ثاني</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('كابتشينو نوع ثاني', 'custom_only')" class="item-card p-2.5 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 text-center transition-all">
+                <button type="button" onclick="selectCoffeeItem('كابتشينو نوع ثاني', 'custom_only')" class="item-card p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 text-center transition-all">
                   <span>كابتشينو نوع ثاني</span>
                 </button>
-                <button type="button" onclick="selectCoffeeItem('هوت شوكلت نوع ثاني', 'custom_only')" class="item-card col-span-2 p-2.5 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 hover:border-amber-300 text-center transition-all">
+                <button type="button" onclick="selectCoffeeItem('هوت شوكلت نوع ثاني', 'custom_only')" class="item-card col-span-2 p-2.5 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 hover:border-amber-600 text-center transition-all">
                   <span>هوت شوكلت نوع ثاني</span>
                 </button>
               </div>
@@ -272,55 +274,55 @@
 
             <!-- 2. خيارات الأوزان -->
             <div id="weightSectionWrapper">
-              <label class="block text-xs font-extrabold text-stone-700 mb-2">تحديد الوزن :</label>
+              <label class="block text-xs font-extrabold text-amber-200/80 mb-2">تحديد الوزن :</label>
               <div id="standardWeightsGrid" class="grid grid-cols-2 gap-2 text-xs font-bold">
-                <button type="button" onclick="setWeight('كيلو')" id="weightBtn-كيلو" class="weight-btn p-3 rounded-2xl border-2 border-amber-600 bg-amber-50 text-amber-900 text-center transition-all">كيلو (1 كغ)</button>
-                <button type="button" onclick="setWeight('نص كيلو')" id="weightBtn-نص كيلو" class="weight-btn p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 text-center transition-all">نص كيلو (500غ)</button>
-                <button type="button" onclick="setWeight('ربع كيلو')" id="weightBtn-ربع كيلو" class="weight-btn p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 text-center transition-all">ربع كيلو (250غ)</button>
-                <button type="button" onclick="setWeight('وقية')" id="weightBtn-وقية" class="weight-btn p-3 rounded-2xl border-2 border-stone-200 bg-white text-stone-700 text-center transition-all">وقية (200غ)</button>
+                <button type="button" onclick="setWeight('كيلو')" id="weightBtn-كيلو" class="weight-btn p-3 rounded-2xl border-2 border-amber-600 bg-amber-950/60 text-amber-200 text-center transition-all">كيلو (1 كغ)</button>
+                <button type="button" onclick="setWeight('نص كيلو')" id="weightBtn-نص كيلو" class="weight-btn p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 text-center transition-all">نص كيلو (500غ)</button>
+                <button type="button" onclick="setWeight('ربع كيلو')" id="weightBtn-ربع كيلو" class="weight-btn p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 text-center transition-all">ربع كيلو (250غ)</button>
+                <button type="button" onclick="setWeight('وقية')" id="weightBtn-وقية" class="weight-btn p-3 rounded-2xl border-2 border-amber-900/40 bg-[#1d140f] text-stone-300 text-center transition-all">وقية (200غ)</button>
               </div>
 
               <div id="customWeightBtnWrapper" class="mt-2 hidden">
-                <button type="button" onclick="setWeight('مخصص')" id="weightBtn-مخصص" class="w-full py-2.5 rounded-2xl border-2 border-dashed border-stone-300 bg-stone-50 text-stone-700 font-bold text-xs hover:border-amber-500 flex items-center justify-center gap-2">
+                <button type="button" onclick="setWeight('مخصص')" id="weightBtn-مخصص" class="w-full py-2.5 rounded-2xl border-2 border-dashed border-amber-800/60 bg-[#1d140f] text-amber-300 font-bold text-xs hover:border-amber-500 flex items-center justify-center gap-2">
                   <i data-lucide="edit-3" class="w-4 h-4"></i>
                   <span>وزن مخصص (إدخال يدوي)</span>
                 </button>
               </div>
 
               <div id="customWeightInputDiv" class="mt-2 hidden">
-                <input type="text" id="customWeightVal" placeholder="اكتب الوزن المطلوب (مثال: 750 غرام، كيس 300غ...)" class="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-2.5 text-xs font-bold text-stone-800 focus:outline-none focus:border-amber-500">
+                <input type="text" id="customWeightVal" placeholder="اكتب الوزن المطلوب (مثال: 750 غرام، كيس 300غ...)" class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-4 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-amber-500">
               </div>
             </div>
 
             <!-- إشعار وزن الزبلطاني الثابت -->
-            <div id="zablaniNotice" class="hidden p-3 bg-amber-50 border border-amber-200 rounded-2xl text-xs font-bold text-amber-900 flex items-center gap-2">
-              <i data-lucide="check-circle-2" class="w-4 h-4 text-amber-700"></i>
+            <div id="zablaniNotice" class="hidden p-3 bg-amber-950/60 border border-amber-700/60 rounded-2xl text-xs font-bold text-amber-200 flex items-center gap-2">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-amber-400"></i>
               <span>الوزن مقفل تلقائياً: 2 كغ (كيلين)</span>
             </div>
 
             <!-- تفاصيل إضافية -->
             <div class="grid grid-cols-2 gap-3 pt-2">
               <div>
-                <label class="block text-[11px] font-bold text-stone-600 mb-1">الكمية (أكياس)</label>
-                <input type="number" id="orderQty" value="1" min="1" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-center text-sm font-black focus:outline-none focus:border-amber-500">
+                <label class="block text-[11px] font-bold text-amber-200/70 mb-1">الكمية (أكياس)</label>
+                <input type="number" id="orderQty" value="1" min="1" class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-center text-sm font-black text-white focus:outline-none focus:border-amber-500">
               </div>
               <div>
-                <label class="block text-[11px] font-bold text-stone-600 mb-1">السعر الإجمالي (ل.س)</label>
-                <input type="number" id="orderPrice" placeholder="المبلغ..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-center text-sm font-black text-amber-700 focus:outline-none focus:border-amber-500" required>
+                <label class="block text-[11px] font-bold text-amber-200/70 mb-1">السعر الإجمالي (ل.س)</label>
+                <input type="number" id="orderPrice" placeholder="المبلغ..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-center text-sm font-black text-amber-400 focus:outline-none focus:border-amber-500" required>
               </div>
             </div>
 
             <div>
-              <label class="block text-[11px] font-bold text-stone-600 mb-1">اسم الزبون / جهة التوصيل (اختياري)</label>
-              <input type="text" id="orderCustomer" placeholder="زبون مباشر، كافيه النجمة، توصيل..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:border-amber-500">
+              <label class="block text-[11px] font-bold text-amber-200/70 mb-1">اسم الزبون / جهة التوصيل (اختياري)</label>
+              <input type="text" id="orderCustomer" placeholder="زبون مباشر، كافيه النجمة، توصيل..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-amber-500">
             </div>
 
             <div>
-              <label class="block text-[11px] font-bold text-stone-600 mb-1">ملاحظات الطحن أو التجهيز</label>
-              <input type="text" id="orderNotes" placeholder="ناعمة جداً، ركوة، مع وش، كيس مضغوط..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:border-amber-500">
+              <label class="block text-[11px] font-bold text-amber-200/70 mb-1">ملاحظات الطحن أو التجهيز</label>
+              <input type="text" id="orderNotes" placeholder="ناعمة جداً، ركوة، مع وش، كيس مضغوط..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-amber-500">
             </div>
 
-            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 active:scale-95 text-white font-black text-sm rounded-2xl shadow-lg shadow-amber-900/20 transition-all flex items-center justify-center gap-2">
+            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 active:scale-95 text-white font-black text-sm rounded-2xl shadow-lg shadow-amber-950/60 transition-all flex items-center justify-center gap-2">
               <i data-lucide="send" class="w-4 h-4"></i>
               <span>إرسال الطلب للورشة فوراً</span>
             </button>
@@ -332,13 +334,13 @@
       <section id="financeTabSection" class="hidden space-y-4">
         
         <div class="grid grid-cols-2 gap-3">
-          <div class="bg-gradient-to-br from-stone-900 to-stone-800 text-white p-4 rounded-3xl shadow-sm border border-stone-700/60">
-            <span class="text-[11px] text-stone-400 font-bold block mb-1">إجمالي المبيعات والطلبات</span>
+          <div class="bg-gradient-to-br from-[#1a110c] to-[#241711] text-white p-4 rounded-3xl shadow-md border border-amber-900/40">
+            <span class="text-[11px] text-amber-200/60 font-bold block mb-1">إجمالي المبيعات والطلبات</span>
             <h3 id="financeTotalOrders" class="text-xl font-black text-amber-300">0 ل.س</h3>
-            <span class="text-[10px] text-stone-400 mt-1 block">شامل طلبات البن والخلطات</span>
+            <span class="text-[10px] text-amber-200/40 mt-1 block">شامل طلبات البن والخلطات</span>
           </div>
 
-          <div class="bg-gradient-to-br from-amber-800 to-amber-950 text-white p-4 rounded-3xl shadow-sm border border-amber-700/60">
+          <div class="bg-gradient-to-br from-amber-900/60 to-amber-950 text-white p-4 rounded-3xl shadow-md border border-amber-700/50">
             <span class="text-[11px] text-amber-200 font-bold block mb-1">إجمالي الدخل المالي الشامل</span>
             <h3 id="financeGrandTotal" class="text-xl font-black text-amber-100">0 ل.س</h3>
             <span class="text-[10px] text-amber-300/80 mt-1 block">طلبات + الغلّة الأسبوعية</span>
@@ -346,18 +348,18 @@
         </div>
 
         <!-- الخط البياني التفاعلي -->
-        <div class="bg-white p-4 rounded-3xl shadow-sm border border-stone-200/80">
-          <div class="flex items-center justify-between mb-3 pb-2 border-b border-stone-100">
+        <div class="bg-[#160f0b] p-4 rounded-3xl shadow-md border border-amber-900/40">
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-amber-900/30">
             <div>
-              <h3 class="text-xs font-black text-stone-800">مخطط التدفق المالي</h3>
-              <p class="text-[10px] text-stone-500">حركة المبيعات خلال الفترات</p>
+              <h3 class="text-xs font-black text-amber-100">مخطط التدفق المالي</h3>
+              <p class="text-[10px] text-amber-200/50">حركة المبيعات خلال الفترات</p>
             </div>
             
-            <div class="flex bg-stone-100 p-1 rounded-xl text-[10px] font-bold">
-              <button onclick="setChartRange('day')" id="chartRange-day" class="px-2.5 py-1 rounded-lg bg-white text-stone-800 shadow-xs">يوم</button>
-              <button onclick="setChartRange('week')" id="chartRange-week" class="px-2.5 py-1 rounded-lg text-stone-500 hover:text-stone-800">أسبوع</button>
-              <button onclick="setChartRange('month')" id="chartRange-month" class="px-2.5 py-1 rounded-lg text-stone-500 hover:text-stone-800">شهر</button>
-              <button onclick="setChartRange('year')" id="chartRange-year" class="px-2.5 py-1 rounded-lg text-stone-500 hover:text-stone-800">سنة</button>
+            <div class="flex bg-[#0d0705] p-1 rounded-xl text-[10px] font-bold border border-amber-900/30">
+              <button onclick="setChartRange('day')" id="chartRange-day" class="px-2.5 py-1 rounded-lg bg-amber-700 text-white shadow-xs">يوم</button>
+              <button onclick="setChartRange('week')" id="chartRange-week" class="px-2.5 py-1 rounded-lg text-amber-200/60 hover:text-white">أسبوع</button>
+              <button onclick="setChartRange('month')" id="chartRange-month" class="px-2.5 py-1 rounded-lg text-amber-200/60 hover:text-white">شهر</button>
+              <button onclick="setChartRange('year')" id="chartRange-year" class="px-2.5 py-1 rounded-lg text-amber-200/60 hover:text-white">سنة</button>
             </div>
           </div>
 
@@ -367,47 +369,47 @@
         </div>
 
         <!-- إدراج الغلّة الأسبوعية للمحل -->
-        <div class="bg-white p-4 rounded-3xl shadow-sm border border-stone-200/80">
+        <div class="bg-[#160f0b] p-4 rounded-3xl shadow-md border border-amber-900/40">
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+              <div class="w-7 h-7 rounded-lg bg-emerald-950/80 text-emerald-400 border border-emerald-700/50 flex items-center justify-center font-bold">
                 <i data-lucide="coins" class="w-4 h-4"></i>
               </div>
-              <h3 class="text-xs font-extrabold text-stone-800">إدراج الغلّة الأسبوعية للمحل</h3>
+              <h3 class="text-xs font-extrabold text-amber-100">إدراج الغلّة الأسبوعية للمحل</h3>
             </div>
-            <button onclick="toggleGhallahHistory()" class="text-[11px] text-amber-700 font-bold hover:underline">السجل السابق</button>
+            <button onclick="toggleGhallahHistory()" class="text-[11px] text-amber-400 font-bold hover:underline">السجل السابق</button>
           </div>
 
           <form onsubmit="handleAddWeeklyGhallah(event)" class="space-y-3">
             <div class="grid grid-cols-2 gap-2">
               <div>
-                <label class="block text-[10px] font-bold text-stone-500 mb-1">المبلغ المحصل (ل.س)</label>
-                <input type="number" id="ghallahAmount" placeholder="مبلغ الغلة..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-black text-emerald-700 focus:outline-none focus:border-emerald-500" required>
+                <label class="block text-[10px] font-bold text-amber-200/70 mb-1">المبلغ المحصل (ل.س)</label>
+                <input type="number" id="ghallahAmount" placeholder="مبلغ الغلة..." class="w-full bg-[#100a07] border border-amber-900/50 rounded-xl px-3 py-2 text-xs font-black text-emerald-400 focus:outline-none focus:border-emerald-500" required>
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-stone-500 mb-1">تاريخ نهاية الأسبوع</label>
-                <input type="date" id="ghallahDate" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-2 py-2 text-xs font-bold text-stone-700 focus:outline-none focus:border-emerald-500" required>
+                <label class="block text-[10px] font-bold text-amber-200/70 mb-1">تاريخ نهاية الأسبوع</label>
+                <input type="date" id="ghallahDate" class="w-full bg-[#100a07] border border-amber-900/50 rounded-xl px-2 py-2 text-xs font-bold text-amber-200 focus:outline-none focus:border-emerald-500" required>
               </div>
             </div>
-            <input type="text" id="ghallahNotes" placeholder="ملاحظة (مثال: غلة الأسبوع الثالث من تشرين...)" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:border-emerald-500">
-            <button type="submit" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md shadow-emerald-900/10 flex items-center justify-center gap-1.5 transition-all">
+            <input type="text" id="ghallahNotes" placeholder="ملاحظة (مثال: غلة الأسبوع الثالث من تشرين...)" class="w-full bg-[#100a07] border border-amber-900/50 rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-emerald-500">
+            <button type="submit" class="w-full py-2.5 bg-emerald-800 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md shadow-emerald-950/60 flex items-center justify-center gap-1.5 transition-all">
               <i data-lucide="plus" class="w-4 h-4"></i>
               <span>تسجيل الغلة في الصندوق المالي</span>
             </button>
           </form>
 
-          <div id="ghallahHistorySection" class="hidden mt-4 pt-3 border-t border-stone-100 max-h-40 overflow-y-auto custom-scrollbar">
-            <p class="text-[10px] font-bold text-stone-400 mb-2">سجل الإيداعات الأسبوعية السحابي:</p>
+          <div id="ghallahHistorySection" class="hidden mt-4 pt-3 border-t border-amber-900/30 max-h-40 overflow-y-auto custom-scrollbar">
+            <p class="text-[10px] font-bold text-amber-200/50 mb-2">سجل الإيداعات الأسبوعية السحابي:</p>
             <div id="ghallahList" class="space-y-1.5 text-xs"></div>
           </div>
         </div>
 
         <div class="flex gap-2">
-          <button onclick="exportMonthlyReportCSV()" class="flex-1 py-3 bg-stone-800 hover:bg-stone-900 text-white font-bold text-xs rounded-2xl shadow-sm flex items-center justify-center gap-2 transition-all">
+          <button onclick="exportMonthlyReportCSV()" class="flex-1 py-3 bg-[#1d140f] hover:bg-[#281b14] text-white border border-amber-900/40 font-bold text-xs rounded-2xl shadow-sm flex items-center justify-center gap-2 transition-all">
             <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-400"></i>
             <span>تصدير كشف الشهر (Excel/CSV)</span>
           </button>
-          <button onclick="window.print()" class="px-4 py-3 bg-stone-200 hover:bg-stone-300 text-stone-700 font-bold text-xs rounded-2xl flex items-center justify-center gap-2">
+          <button onclick="window.print()" class="px-4 py-3 bg-[#1d140f] hover:bg-[#281b14] text-amber-200 border border-amber-900/40 font-bold text-xs rounded-2xl flex items-center justify-center gap-2">
             <i data-lucide="printer" class="w-4 h-4"></i>
           </button>
         </div>
@@ -417,7 +419,7 @@
     </main>
 
     <!-- شريط التنقل السفلي للموبايل (Bottom Navigation) -->
-    <nav class="fixed bottom-0 inset-x-0 z-40 bg-stone-900 border-t border-stone-800 text-stone-400 px-4 py-2">
+    <nav class="fixed bottom-0 inset-x-0 z-40 bg-[#160f0b]/95 backdrop-blur-md border-t border-amber-900/40 text-stone-400 px-4 py-2">
       <div class="max-w-md mx-auto flex items-center justify-around">
         <button onclick="switchTab('orders')" id="tabBtn-orders" class="nav-tab-btn flex flex-col items-center gap-1 py-1 px-3 rounded-xl text-amber-500 font-bold">
           <i data-lucide="layout-list" class="w-5 h-5"></i>
@@ -439,28 +441,28 @@
   </div>
 
   <!-- Modal تغيير كلمات السر -->
-  <div id="settingsModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl p-5 w-full max-w-sm shadow-2xl border border-stone-200">
-      <div class="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
-        <h3 class="text-sm font-extrabold text-stone-800 flex items-center gap-2">
-          <i data-lucide="shield-check" class="w-4 h-4 text-amber-600"></i>
+  <div id="settingsModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-[#18100c] rounded-3xl p-5 w-full max-w-sm shadow-2xl border border-amber-800/60">
+      <div class="flex items-center justify-between pb-3 border-b border-amber-900/30 mb-4">
+        <h3 class="text-sm font-extrabold text-amber-100 flex items-center gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i>
           <span>إعدادات الأمان وكلمات السر</span>
         </h3>
-        <button onclick="closeSettingsModal()" class="text-stone-400 hover:text-stone-700">
+        <button onclick="closeSettingsModal()" class="text-amber-300/70 hover:text-white">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
       <div class="space-y-3">
         <div>
-          <label class="block text-[11px] font-bold text-stone-600 mb-1">كلمة مرور الـ Boss</label>
-          <input type="password" id="changeBossPass" placeholder="كلمة سر البوس..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold">
+          <label class="block text-[11px] font-bold text-amber-200/70 mb-1">كلمة مرور الـ Boss</label>
+          <input type="password" id="changeBossPass" placeholder="كلمة سر البوس..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-amber-500">
         </div>
         <div>
-          <label class="block text-[11px] font-bold text-stone-600 mb-1">كلمة مرور العامل (الباريستا)</label>
-          <input type="password" id="changeWorkerPass" placeholder="كلمة سر العامل..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold">
+          <label class="block text-[11px] font-bold text-amber-200/70 mb-1">كلمة مرور العامل (الباريستا)</label>
+          <input type="password" id="changeWorkerPass" placeholder="كلمة سر العامل..." class="w-full bg-[#100a07] border border-amber-900/60 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-amber-500">
         </div>
-        <button onclick="saveNewPasswords()" class="w-full py-2.5 mt-2 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs rounded-xl transition-all">
+        <button onclick="saveNewPasswords()" class="w-full py-2.5 mt-2 bg-amber-700 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-lg transition-all">
           حفظ التغييرات
         </button>
       </div>
@@ -475,7 +477,7 @@
   <!-- ==================== JavaScript مع الربط السحابي الحقيقي ==================== -->
   <script>
     // -------------------------------------------------------------------
-    // 1. إعدادات Firebase الحقيقية الخاصة بمشروع tarek-coffee
+    // 1. إعدادات Firebase الحقيقية لمشروع tarek-coffee
     // -------------------------------------------------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyCIfvAfNdZ9ovjUC8qExL5vDVTIdW1m0qA",
@@ -540,7 +542,6 @@
       const dateInp = document.getElementById('ghallahDate');
       if (dateInp) dateInp.value = today;
 
-      // تحديث شارة السحابة
       const badge = document.getElementById('cloud-status-badge');
       if (isCloud && badge) {
         badge.innerHTML = 'سحابي 🟢';
@@ -550,7 +551,6 @@
         badge.className = 'text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-amber-950 text-amber-400 border border-amber-600/40';
       }
 
-      // تشغيل الاستماع المباشر للسحابة
       initCloudSync();
       startWorkerHeartbeat();
       setInterval(renderWorkerPresence, 15000);
@@ -587,7 +587,6 @@
         return;
       }
 
-      // الاستماع للطلبات لحظياً
       db.collection("orders").orderBy("createdAt", "desc").onSnapshot(snapshot => {
         const list = [];
         snapshot.forEach(doc => {
@@ -601,7 +600,6 @@
         console.error("خطأ قراءة الطلبات:", err);
       });
 
-      // الاستماع للغلة لحظياً
       db.collection("ghallah").orderBy("createdAt", "desc").onSnapshot(snapshot => {
         const list = [];
         snapshot.forEach(doc => {
@@ -614,7 +612,6 @@
         console.error("خطأ قراءة الغلة:", err);
       });
 
-      // الاستماع لنشاط العامل
       db.collection("system").doc("presence").onSnapshot(doc => {
         if (doc.exists) {
           const data = doc.data();
@@ -635,10 +632,10 @@
 
       if (role === 'boss') {
         bBtn.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all bg-amber-600 text-white shadow-md flex items-center justify-center gap-2";
-        wBtn.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all text-stone-400 hover:text-white flex items-center justify-center gap-2";
+        wBtn.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all text-amber-200/50 hover:text-white flex items-center justify-center gap-2";
       } else {
         wBtn.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all bg-amber-600 text-white shadow-md flex items-center justify-center gap-2";
-        bBtn.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all text-stone-400 hover:text-white flex items-center justify-center gap-2";
+        bBtn.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl transition-all text-amber-200/50 hover:text-white flex items-center justify-center gap-2";
       }
     }
 
@@ -724,23 +721,23 @@
 
       if (!workerLastSeenTimestamp) {
         textElem.textContent = "لم يسجل دخول بعد";
-        dot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-stone-400 border-2 border-white";
+        dot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-stone-500 border-2 border-[#160f0b]";
         return;
       }
 
       const diffSec = Math.floor((Date.now() - workerLastSeenTimestamp) / 1000);
 
       if (diffSec < 70) {
-        textElem.innerHTML = `<span class="text-emerald-600 font-extrabold">متصل الآن 🟢 بالورشة</span>`;
-        dot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white animate-pulse";
+        textElem.innerHTML = `<span class="text-emerald-400 font-extrabold">متصل الآن 🟢 بالورشة</span>`;
+        dot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-[#160f0b] animate-pulse";
       } else if (diffSec < 3600) {
         const mins = Math.floor(diffSec / 60);
         textElem.textContent = `آخر ظهور: منذ ${mins} دقيقة`;
-        dot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-amber-500 border-2 border-white";
+        dot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-amber-500 border-2 border-[#160f0b]";
       } else {
         const d = new Date(workerLastSeenTimestamp);
         textElem.textContent = `آخر ظهور: ${d.toLocaleTimeString('ar-SY', {hour:'2-digit', minute:'2-digit'})}`;
-        dot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-stone-400 border-2 border-white";
+        dot.className = "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-stone-500 border-2 border-[#160f0b]";
       }
     }
 
@@ -783,11 +780,11 @@
 
       document.querySelectorAll('.item-card').forEach(card => {
         if (card.textContent.includes(itemName)) {
-          card.classList.remove('border-stone-200', 'bg-white', 'text-stone-700');
-          card.classList.add('border-amber-600', 'bg-amber-50', 'text-amber-900');
+          card.classList.remove('border-amber-900/40', 'bg-[#1d140f]', 'text-stone-300');
+          card.classList.add('border-amber-600', 'bg-amber-950/60', 'text-amber-200');
         } else {
-          card.classList.remove('border-amber-600', 'bg-amber-50', 'text-amber-900');
-          card.classList.add('border-stone-200', 'bg-white', 'text-stone-700');
+          card.classList.remove('border-amber-600', 'bg-amber-950/60', 'text-amber-200');
+          card.classList.add('border-amber-900/40', 'bg-[#1d140f]', 'text-stone-300');
         }
       });
 
@@ -837,14 +834,14 @@
     function setWeight(w) {
       newOrderState.weight = w;
       document.querySelectorAll('.weight-btn').forEach(btn => {
-        btn.classList.remove('border-amber-600', 'bg-amber-50', 'text-amber-900');
-        btn.classList.add('border-stone-200', 'bg-white', 'text-stone-700');
+        btn.classList.remove('border-amber-600', 'bg-amber-950/60', 'text-amber-200');
+        btn.classList.add('border-amber-900/40', 'bg-[#1d140f]', 'text-stone-300');
       });
 
       const activeBtn = document.getElementById(`weightBtn-${w}`);
       if (activeBtn) {
-        activeBtn.classList.remove('border-stone-200', 'bg-white', 'text-stone-700');
-        activeBtn.classList.add('border-amber-600', 'bg-amber-50', 'text-amber-900');
+        activeBtn.classList.remove('border-amber-900/40', 'bg-[#1d140f]', 'text-stone-300');
+        activeBtn.classList.add('border-amber-600', 'bg-amber-950/60', 'text-amber-200');
       }
 
       const customInput = document.getElementById('customWeightInputDiv');
@@ -899,7 +896,6 @@
         updateFinancialDashboard();
       }
 
-      // تفريغ الحقول
       document.getElementById('orderPrice').value = '';
       document.getElementById('orderCustomer').value = '';
       document.getElementById('orderNotes').value = '';
@@ -949,16 +945,16 @@
     }
 
     // -------------------------------------------------------------------
-    // 9. عرض وتصفية الطلبات
+    // 9. عرض وتصفية الطلبات (تصميم ليلي فاخر للبطاقات)
     // -------------------------------------------------------------------
     function filterOrders(status) {
       currentFilter = status;
       ['all', 'pending', 'preparing', 'ready', 'completed'].forEach(s => {
         const btn = document.getElementById(`filterBtn-${s}`);
         if (s === status) {
-          btn.className = "px-3.5 py-2 rounded-xl bg-stone-800 text-white shadow-sm whitespace-nowrap";
+          btn.className = "px-3.5 py-2 rounded-xl bg-amber-700 text-white shadow-sm whitespace-nowrap";
         } else {
-          btn.className = "px-3.5 py-2 rounded-xl bg-white text-stone-600 border border-stone-200 whitespace-nowrap";
+          btn.className = "px-3.5 py-2 rounded-xl bg-[#1b120d] text-amber-200/70 border border-amber-900/40 whitespace-nowrap";
         }
       });
       loadOrders();
@@ -994,70 +990,70 @@
 
         let statusBadge = '';
         if (order.status === 'pending') {
-          statusBadge = `<span class="bg-amber-100 text-amber-900 border border-amber-200 px-2 py-0.5 rounded-lg text-[10px] font-black">قيد المتابعة</span>`;
+          statusBadge = `<span class="bg-amber-950 text-amber-300 border border-amber-600/50 px-2 py-0.5 rounded-lg text-[10px] font-black">قيد المتابعة</span>`;
         } else if (order.status === 'preparing') {
-          statusBadge = `<span class="bg-blue-100 text-blue-900 border border-blue-200 px-2 py-0.5 rounded-lg text-[10px] font-black animate-pulse">جاري التحضير ⚙️</span>`;
+          statusBadge = `<span class="bg-blue-950 text-blue-300 border border-blue-600/50 px-2 py-0.5 rounded-lg text-[10px] font-black animate-pulse">جاري التحضير ⚙️</span>`;
         } else if (order.status === 'ready') {
-          statusBadge = `<span class="bg-emerald-100 text-emerald-900 border border-emerald-200 px-2 py-0.5 rounded-lg text-[10px] font-black">جاهز للتسليم ☕</span>`;
+          statusBadge = `<span class="bg-emerald-950 text-emerald-300 border border-emerald-600/50 px-2 py-0.5 rounded-lg text-[10px] font-black">جاهز للتسليم ☕</span>`;
         } else {
-          statusBadge = `<span class="bg-stone-100 text-stone-600 px-2 py-0.5 rounded-lg text-[10px] font-bold">مكتمل ✅</span>`;
+          statusBadge = `<span class="bg-[#241711] text-stone-400 border border-stone-800 px-2 py-0.5 rounded-lg text-[10px] font-bold">مكتمل ✅</span>`;
         }
 
         return `
-          <div class="bg-white rounded-2xl p-4 shadow-xs border border-stone-200/90 relative overflow-hidden">
+          <div class="bg-[#170f0b] rounded-2xl p-4 shadow-md border border-amber-900/40 relative overflow-hidden">
             <div class="flex items-start justify-between mb-2">
               <div class="flex items-center gap-2">
-                <span class="text-[11px] font-black bg-stone-100 text-stone-700 px-2 py-0.5 rounded-md font-mono">${order.orderId || order.id}</span>
-                <h4 class="text-sm font-extrabold text-stone-900">${order.item}</h4>
+                <span class="text-[11px] font-black bg-[#231711] text-amber-300 border border-amber-900/40 px-2 py-0.5 rounded-md font-mono">${order.orderId || order.id}</span>
+                <h4 class="text-sm font-extrabold text-white">${order.item}</h4>
               </div>
               <div class="flex items-center gap-1.5">
                 ${statusBadge}
                 ${currentUserRole === 'boss' ? `
-                  <button onclick="deleteOrder('${order.id}')" class="text-stone-300 hover:text-rose-500 p-1">
+                  <button onclick="deleteOrder('${order.id}')" class="text-amber-200/40 hover:text-rose-400 p-1">
                     <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                   </button>
                 ` : ''}
               </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 my-2.5 bg-stone-50 p-2.5 rounded-xl text-xs">
+            <div class="grid grid-cols-2 gap-2 my-2.5 bg-[#1f1510] p-2.5 rounded-xl text-xs border border-amber-900/20">
               <div>
-                <span class="text-[10px] text-stone-400 font-bold block">الوزن المطلوب:</span>
-                <span class="font-black text-amber-900">${order.weight}</span>
+                <span class="text-[10px] text-amber-200/50 font-bold block">الوزن المطلوب:</span>
+                <span class="font-black text-amber-300">${order.weight}</span>
               </div>
               <div>
-                <span class="text-[10px] text-stone-400 font-bold block">الكمية:</span>
-                <span class="font-black text-stone-800">${order.qty} كيس</span>
+                <span class="text-[10px] text-amber-200/50 font-bold block">الكمية:</span>
+                <span class="font-black text-stone-200">${order.qty} كيس</span>
               </div>
             </div>
 
             ${order.notes ? `
-              <div class="text-[11px] text-stone-600 bg-amber-50/60 p-2 rounded-lg mb-2.5 flex items-center gap-1.5 border border-amber-100/80">
-                <i data-lucide="info" class="w-3.5 h-3.5 text-amber-700 flex-shrink-0"></i>
+              <div class="text-[11px] text-amber-200 bg-[#241711] p-2 rounded-lg mb-2.5 flex items-center gap-1.5 border border-amber-900/40">
+                <i data-lucide="info" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>
                 <span>ملاحظة: ${order.notes}</span>
               </div>
             ` : ''}
 
-            <div class="flex items-center justify-between pt-2 border-t border-stone-100 text-[11px]">
-              <span class="text-stone-400 font-medium">${order.customer} • ${timeStr}</span>
-              <span class="font-black text-stone-900">${(order.price || 0).toLocaleString()} ل.س</span>
+            <div class="flex items-center justify-between pt-2 border-t border-amber-900/30 text-[11px]">
+              <span class="text-amber-200/50 font-medium">${order.customer} • ${timeStr}</span>
+              <span class="font-black text-emerald-400">${(order.price || 0).toLocaleString()} ل.س</span>
             </div>
 
             ${isWorker ? `
-              <div class="mt-3 pt-3 border-t border-stone-100 flex gap-1.5 text-xs font-bold">
-                <button onclick="updateOrderStatusByWorker('${order.id}', 'preparing')" class="flex-1 py-2 rounded-xl ${order.status === 'preparing' ? 'bg-blue-600 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}">
+              <div class="mt-3 pt-3 border-t border-amber-900/30 flex gap-1.5 text-xs font-bold">
+                <button onclick="updateOrderStatusByWorker('${order.id}', 'preparing')" class="flex-1 py-2 rounded-xl ${order.status === 'preparing' ? 'bg-blue-600 text-white' : 'bg-[#261811] text-amber-200 hover:bg-[#342217] border border-amber-900/40'}">
                   تحضير
                 </button>
-                <button onclick="updateOrderStatusByWorker('${order.id}', 'ready')" class="flex-1 py-2 rounded-xl ${order.status === 'ready' ? 'bg-emerald-600 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}">
+                <button onclick="updateOrderStatusByWorker('${order.id}', 'ready')" class="flex-1 py-2 rounded-xl ${order.status === 'ready' ? 'bg-emerald-600 text-white' : 'bg-[#261811] text-amber-200 hover:bg-[#342217] border border-amber-900/40'}">
                   جاهز
                 </button>
-                <button onclick="updateOrderStatusByWorker('${order.id}', 'completed')" class="py-2 px-3 rounded-xl bg-stone-800 text-white">
+                <button onclick="updateOrderStatusByWorker('${order.id}', 'completed')" class="py-2 px-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-white">
                   تم التسليم
                 </button>
               </div>
             ` : `
               <div class="mt-2 text-left">
-                <span class="text-[10px] text-stone-400 font-bold">تحديث الحالة من هاتف الباريستا</span>
+                <span class="text-[10px] text-amber-200/40 font-bold">تحديث الحالة من هاتف الباريستا</span>
               </div>
             `}
 
@@ -1069,7 +1065,7 @@
     }
 
     // -------------------------------------------------------------------
-    // 10. الإدارة المالية والغلّة الأسبوعية السحابية
+    // 10. الإدارة المالية والغلّة الأسبوعية
     // -------------------------------------------------------------------
     function handleAddWeeklyGhallah(e) {
       e.preventDefault();
@@ -1133,16 +1129,16 @@
       const ghallahListElem = document.getElementById('ghallahList');
       if (ghallahListElem) {
         ghallahListElem.innerHTML = ghallahList.map(g => `
-          <div class="flex items-center justify-between bg-stone-50 p-2 rounded-lg border border-stone-100">
+          <div class="flex items-center justify-between bg-[#1f1510] p-2 rounded-lg border border-amber-900/30">
             <div>
-              <span class="font-extrabold text-stone-800">${(g.amount || 0).toLocaleString()} ل.س</span>
-              <span class="text-[10px] text-stone-500 block">${g.date} (${g.notes})</span>
+              <span class="font-extrabold text-amber-200">${(g.amount || 0).toLocaleString()} ل.س</span>
+              <span class="text-[10px] text-amber-200/50 block">${g.date} (${g.notes})</span>
             </div>
             <button onclick="deleteGhallahItem('${g.id}')" class="text-rose-400 hover:text-rose-600 p-1">
               <i data-lucide="trash" class="w-3.5 h-3.5"></i>
             </button>
           </div>
-        `).join('') || '<p class="text-stone-400 text-center py-2 text-xs">لا توجد غلال مسجلة بعد</p>';
+        `).join('') || '<p class="text-amber-200/40 text-center py-2 text-xs">لا توجد غلال مسجلة بعد</p>';
       }
 
       renderSalesChart();
@@ -1155,9 +1151,9 @@
         const btn = document.getElementById(`chartRange-${r}`);
         if (btn) {
           if (r === range) {
-            btn.className = "px-2.5 py-1 rounded-lg bg-white text-stone-800 shadow-xs";
+            btn.className = "px-2.5 py-1 rounded-lg bg-amber-700 text-white shadow-xs";
           } else {
-            btn.className = "px-2.5 py-1 rounded-lg text-stone-500 hover:text-stone-800";
+            btn.className = "px-2.5 py-1 rounded-lg text-amber-200/60 hover:text-white";
           }
         }
       });
@@ -1202,8 +1198,8 @@
             {
               label: 'مبيعات الطلبات',
               data: ordersData,
-              borderColor: '#9C6644',
-              backgroundColor: 'rgba(156, 102, 68, 0.1)',
+              borderColor: '#BA8D6A',
+              backgroundColor: 'rgba(186, 141, 106, 0.15)',
               fill: true,
               tension: 0.3,
               borderWidth: 2.5
@@ -1211,7 +1207,7 @@
             {
               label: 'الغلّة المباشرة',
               data: ghallahData,
-              borderColor: '#059669',
+              borderColor: '#10B981',
               backgroundColor: 'transparent',
               borderDash: [5, 5],
               tension: 0.3,
@@ -1226,12 +1222,22 @@
             legend: {
               display: true,
               position: 'bottom',
-              labels: { boxWidth: 10, font: { family: 'Tajawal', size: 10 } }
+              labels: { 
+                boxWidth: 10, 
+                color: '#E8D5C4',
+                font: { family: 'Tajawal', size: 10 } 
+              }
             }
           },
           scales: {
-            y: { grid: { color: '#f3f4f6' }, ticks: { font: { family: 'Tajawal', size: 9 } } },
-            x: { grid: { display: false }, ticks: { font: { family: 'Tajawal', size: 9 } } }
+            y: { 
+              grid: { color: 'rgba(255, 255, 255, 0.05)' }, 
+              ticks: { color: '#BA8D6A', font: { family: 'Tajawal', size: 9 } } 
+            },
+            x: { 
+              grid: { display: false }, 
+              ticks: { color: '#BA8D6A', font: { family: 'Tajawal', size: 9 } } 
+            }
           }
         }
       });
